@@ -1,10 +1,10 @@
-class UserModel(object):
+class User():
 	"""Adds user class"""
 
 	def __init__(self):
 		self.users = {}
 
-	def sign_up(self, fname, lname, username, email, password):
+	def register_user(self, fname, lname, username, email, password):
 		user_id = str(len(self.users) + 1)
 		reg_user = {
 			"id" : user_id,
