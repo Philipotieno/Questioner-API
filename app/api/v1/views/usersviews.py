@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app.api.v1.models.usersmodels import User
+from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 import os
 
@@ -10,7 +11,7 @@ v1_user = Blueprint('users', __name__)
 user_inst = User() #user class instance
 
 
-@v1_user.route('/', methods=['POST'])
+@v1_user.route('/register', methods=['POST'])
 def registered_user():
 	data = request.get_json()
 	firstname = data["firstname"]
@@ -19,6 +20,8 @@ def registered_user():
 	email = data["email"]
 	phone = data["phone"]
 	password = data["password"]
+
+	hashed_password = generate_password_hash(password, method='sha256')
 
 	email_format = re.compile(
 		r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[a-zA-Z-]+$)")
@@ -54,9 +57,30 @@ def registered_user():
 		username=username,
 		email=email,
 		phone =phone,
-		password=password,
+		password=hashed_password,
 		registered=datetime.datetime.now()
 		)
 
 
 	return jsonify({'message': 'User Registered successfully!', 'Users' : user_inst.users}), 201
+
+@v1_user.route('/login', methods=['POST'])
+def login():
+	data = request.get_json()
+
+	username = data['username']
+	password = data['password']
+
+	if not username or not password:
+		return jsonify({'message' : 'Input all required fields'}), 400
+
+	if not data["username"] in user_inst.users:
+		return jsonify({'message' : 'user not registered'}), 401
+
+	user = user_inst.users[username]
+
+	if check_password_hash(user['password'], data['password']):
+		return jsonify({"message" : "You are now logged in", "username" : username}), 200
+	
+	return jsonify({"message" : "enter the right password"}), 401
+

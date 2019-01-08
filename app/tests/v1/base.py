@@ -34,10 +34,15 @@ class TestSetup(unittest.TestCase):
         }
 
         self.register = self.client.post(
-        	'/v1/register/',
+        	'/v1/register',
             data=json.dumps(self.user_1),
             content_type='application/json')
 
+        self.login = self.client.post(
+            '/v1/login',
+            data=json.dumps(self.user_1),
+            content_type='application/json')
+        self.data = json.loads(self.login.data.decode("UTF-8"))
 
     def tearDown(self):
         self.users = user.users

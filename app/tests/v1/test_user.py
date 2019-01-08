@@ -10,7 +10,7 @@ class TestUser(TestSetup):
 
         # register a user
         res = self.client.post(
-            '/v1/register/',
+            '/v1/register',
             data=json.dumps(self.user_2),
             content_type='application/json')
 
@@ -19,6 +19,21 @@ class TestUser(TestSetup):
         self.assertIn('User Registered successfully!', msg['message'])
         self.assertTrue(res.content_type == 'application/json')
 
+
+    def test_registered_user_login(self):
+        self.client.post(
+            '/v1/register',
+            data=json.dumps(self.user_1),
+            content_type='application/json')
+
+        res = self.client.post(
+            '/v1/login',
+            data=json.dumps(self.user_1),
+            content_type='application/json')
+        msg = json.loads(res.data.decode('UTF-8'))
+        self.assertIn('You are now logged in', msg['message'])
+        self.assertTrue(res.content_type == 'application/json')
+        self.assertEqual(res.status_code, 200)
 
 if __name__ == '__main__':
     unittest.main()
