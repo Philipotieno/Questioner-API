@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app.api.v1.models.usersmodels import User
+import datetime
 import os
 
 import re
@@ -54,7 +55,7 @@ def registered_user():
 		email=email,
 		phone =phone,
 		password=password,
-		registered="today"
+		registered=datetime.datetime.now()
 		)
 
 
