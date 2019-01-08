@@ -80,7 +80,7 @@ def login():
 	user = user_inst.users[username]
 
 	if check_password_hash(user['password'], data['password']):
-		return jsonify({"message" : "You are now logged in", "username" : username}), 401
+		return jsonify({"message" : "You are now logged in", "username" : username}), 200
 	
-	return jsonify({"message" : "enter the right password"}), 200
+	return jsonify({"message" : "enter the right password"}), 401
 
