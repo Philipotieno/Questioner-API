@@ -15,17 +15,26 @@ class TestSetup(unittest.TestCase):
         self.client = self.app.test_client()
 
         self.user_1 = {
-            "firstname" : "fname",
-            "lastname" : "lname",
-            "username" : "username",
-            "email" : "email",
-            "phone" : "phone",
-            "password" : "password",
-            "registered" : "registered"
+            "firstname" : "tfirstname",
+            "lastname" : "lastname",
+            "username" : "testuser",
+            "email" : "email@gmail.com",
+            "phone" : "07034744",
+            "password" : "password"
+        }
+
+        """not registered"""
+        self.user_2 = {
+            "firstname" : "testuser",
+            "lastname" : "lastname",
+            "username" : "testuserame",
+            "email" : "emailwe3@gmail.com",
+            "phone" : "07034744",
+            "password" : "password"
         }
 
         self.register = self.client.post(
-        	'/auth/register',
+        	'/v1/register/',
             data=json.dumps(self.user_1),
             content_type='application/json')
 
