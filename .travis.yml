@@ -13,7 +13,7 @@ script:
   - python -m pytest --cov-report term-missing --cov=app
   - coveralls
 branches:
-  -develop
+  - develop
 
 after_success:
   - coveralls
