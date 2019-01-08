@@ -11,7 +11,7 @@ install:
 
 script: 
   - python -m pytest --cov-report term-missing --cov=app
-  -coveralls
+  - coveralls
 branches:
   -develop
 
