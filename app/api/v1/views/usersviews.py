@@ -10,7 +10,7 @@ v1_user = Blueprint('users', __name__)
 user_inst = User() #user class instance
 
 
-@v1_user.route('/', methods=['POST'])
+@v1_user.route('/register', methods=['POST'])
 def registered_user():
 	data = request.get_json()
 	firstname = data["firstname"]
@@ -60,3 +60,23 @@ def registered_user():
 
 
 	return jsonify({'message': 'User Registered successfully!', 'Users' : user_inst.users}), 201
+
+@v1_user.route('/login', methods=['POST'])
+def login():
+	data = request.get_json()
+
+	username = data['username']
+	password = data['password']
+
+	if not username or not password:
+		return jsonify({'message' : 'Input all required fields'}), 400
+
+	if not data["username"] in user_inst.users:
+		return jsonify({'message' : 'user not registered'}), 401
+
+	user = user_inst.users[username]
+
+	if not (user['password'], data['password']):
+		return jsonify({"message" : "enter the right password"}), 200
+		
+	return jsonify({"message" : "You are now logged in", "username" : username}), 401
