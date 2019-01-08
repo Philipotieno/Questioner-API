@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app.api.v1.models.usersmodels import User
+from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 import os
 
@@ -19,6 +20,8 @@ def registered_user():
 	email = data["email"]
 	phone = data["phone"]
 	password = data["password"]
+
+	hashed_password = generate_password_hash(password, method='sha256')
 
 	email_format = re.compile(
 		r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[a-zA-Z-]+$)")
@@ -54,7 +57,7 @@ def registered_user():
 		username=username,
 		email=email,
 		phone =phone,
-		password=password,
+		password=hashed_password,
 		registered=datetime.datetime.now()
 		)
 
@@ -76,7 +79,8 @@ def login():
 
 	user = user_inst.users[username]
 
-	if not (user['password'], data['password']):
-		return jsonify({"message" : "enter the right password"}), 200
-		
-	return jsonify({"message" : "You are now logged in", "username" : username}), 401
+	if check_password_hash(user['password'], data['password']):
+		return jsonify({"message" : "You are now logged in", "username" : username}), 401
+	
+	return jsonify({"message" : "enter the right password"}), 200
+
