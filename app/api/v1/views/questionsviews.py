@@ -24,6 +24,7 @@ def create_question():
 		)
 
 	if not user or not meetup or not title or not body:
-		return jsonify({'message': 'Please input all required fields!'}), 400
+		return jsonify({'message': 'Please input all required fields!', "status":400}), 400
 		
-	return jsonify({'Message' : 'Meetup created successfully', 'Question' : questions_inst.questions}), 201
+	return jsonify({'Message' : 'Question created successfully', 'Question' : questions_inst.questions, "status":201}), 201
+
