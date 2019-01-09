@@ -4,8 +4,10 @@ import json
 from app import create_app
 
 from app.api.v1.models.usersmodels import User
+from app.api.v1.models.meetupsmodel import Meetup
 
 user = User()
+meetup = Meetup()
 
 class TestSetup(unittest.TestCase):
     """Base test class for all test classes"""
@@ -43,6 +45,26 @@ class TestSetup(unittest.TestCase):
             data=json.dumps(self.user_1),
             content_type='application/json')
         self.data = json.loads(self.login.data.decode("UTF-8"))
+
+
+        self.meetup_1 = {
+            "topic" : "testtopic",
+            "location" : "testlocation",
+            "tags" : "tagfour, tagfive",
+            "happeningOn" : "11/12/2019"
+        }
+
+        self.meetup_2 = {
+            "topic" : "testtopics",
+            "location" : "testlocations",
+            "tags" : "tagtwo, tagone",
+            "happeningOn" : "11/12/2019"
+        }
+
+        self.create_meetup = self.client.post(
+            '/v1/meetups',
+            data=json.dumps(self.meetup_1),
+            content_type='application/json')
 
     def tearDown(self):
         self.users = user.users
