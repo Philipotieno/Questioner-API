@@ -4,7 +4,7 @@ from app.api.v1.models.meetupsmodel import Meetup
 
 v1_meetups = Blueprint('meetups', __name__)
 
-meetups = Meetup()
+meetups = Meetup() #meetup class instance
 
 @v1_meetups.route('', methods=['POST'])
 def create_meetup():
@@ -12,7 +12,8 @@ def create_meetup():
 	topic = data['topic']
 	location = data['location']
 	tags = data['tags']
+	happeningOn = data['happeningOn']
 
-	# if not title or not content:
-	# 	return jsonify({'message': 'Please input all required fields!'}), 400
-	return jsonify({'Message' : 'You have succesfully posted your question'}), 201
+	if not topic or not location or not tags or not happeningOn:
+		return jsonify({'message': 'Please input all required fields!'}), 400
+	return jsonify({'Message' : 'Meetup created successfully'}), 201
