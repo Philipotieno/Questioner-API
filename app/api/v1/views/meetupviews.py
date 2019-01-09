@@ -30,6 +30,6 @@ def create_meetup():
 def get_meetups():
 	all_meetups = meetups.get_all_meetups()
 	if not all_meetups:
-		return jsonify({'message' : 'No meetups', "status": 200})
+		return jsonify({'message' : 'No meetups', "status": 200}), 200
 
-	return jsonify({"meetups" : all_meetups, "status": 200})
+	return jsonify({"meetups" : all_meetups, "status": 200}), 200
