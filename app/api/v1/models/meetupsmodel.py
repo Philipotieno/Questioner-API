@@ -8,8 +8,8 @@ class Meetup():
 			"id" : meetup_id,
 				"topic" : topic,
 				"location" : location,
-				"tags" : tags
-				"happeningOn" : "happeningOn"
+				"tags" : tags,
+				"happeningOn" : happeningOn
 		}
 
 		self.meetups[meetup_id] = new_meetup
