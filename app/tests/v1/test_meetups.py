@@ -15,4 +15,4 @@ class TestMeetup(TestSetup):
             content_type='application/json')
         self.assertEqual(res.status_code, 201)
         msg = json.loads(res.data.decode("UTF-8"))
-        self.assertIn("Meetup created successfully", msg["message"])
+        self.assertIn("Meetup created successfully", msg["Message"])
