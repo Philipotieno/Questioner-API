@@ -14,3 +14,8 @@ class Meetup():
 
 		self.meetups[meetup_id] = new_meetup
 		return self.meetups
+
+	def get_all_meetups(self):
+		'''Method to fetch all meetups'''
+		if self.meetups:
+			return self.meetups
