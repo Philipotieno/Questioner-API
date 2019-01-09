@@ -38,6 +38,6 @@ def get_meetups():
 def get_specific_questions(meetup_id):
 	a_meetup = meetups.get_specific_meetup(meetup_id)
 	if not a_meetup:
-		return jsonify({'message' : 'meetup does not exist'})
+		return jsonify({'message' : 'meetup does not exist', "status" : 404}), 404
 
-	return jsonify({"meetups" : a_meetup})
+	return jsonify({"meetups" : a_meetup, "status" : 200}), 200
