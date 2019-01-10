@@ -234,10 +234,10 @@ Required fields: `attending`
  pip install -r requirements.txt
 
  touch .env
- 		Add the following
- 			export FLASK_APP="run.py"
-			export FLASK_ENV=development
-			export SECRET="some random string
+ Add the following
+ 	export FLASK_APP="run.py"
+	export FLASK_ENV=development
+	export SECRET="some random string
 
 source .env
 
