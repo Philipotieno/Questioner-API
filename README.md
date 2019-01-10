@@ -45,7 +45,7 @@ Example request body:
 }
 ```
 
-No authentication required, returns a User
+No authentication required, returns a user
 
 Required fields: `firstname`, `lastname`, `username`, `phone`, `email`, `password`
 
@@ -83,7 +83,7 @@ Example request body:
 }
 ```
 
-No authentication required, returns a User
+No authentication required, returns a meetup
 
 Required fields: `topic`, `location`, `tags`, `happeningOn`
 
@@ -121,7 +121,7 @@ Example reSponse:
     "status": 200
 }
 ```
-No authentication required, returns a User
+No authentication required, returns a meetup
 
 # Get specific meetup records
 
@@ -142,7 +142,7 @@ Example reSponse:
     "status": 200
 }
 ```
-No authentication required, returns a User
+No authentication required, returns a meetup
 
 Required: `<meetup_id>`
 
@@ -161,7 +161,7 @@ Example request body:
 }
 ```
 
-No authentication required, returns a User
+No authentication required, returns a question
 
 Required fields: `user`, `meetup`, `title`, `body` 
 
@@ -178,7 +178,7 @@ Example request body:
 }
 ```
 
-No authentication required, returns a User
+No authentication required
 
 Required fields: `user_id`, `upvote`
 
@@ -195,7 +195,7 @@ Example request body:
 }
 ```
 
-No authentication required, returns a User
+No authentication required
 
 Required fields: `user`, `downvote`
 
@@ -211,7 +211,7 @@ Example request body:
 }
 ```
 
-No authentication required, returns a User
+No authentication required
 
 Required fields: `attending`
 
