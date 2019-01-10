@@ -9,7 +9,8 @@ class Meetup():
 				"topic" : topic,
 				"location" : location,
 				"tags" : tags,
-				"happeningOn" : happeningOn
+				"happeningOn" : happeningOn,
+				"attending" : "no status"
 		}
 
 		self.meetups[meetup_id] = new_meetup
@@ -26,3 +27,10 @@ class Meetup():
 			for mtups in self.meetups.values():
 				if mtups["id"] == meetup_id:
 					return mtups
+
+	def response(self, meetup_id, attending):
+		""" Method to rsvp to a specific meetup"""
+		mtup = self.get_specific_meetup(meetup_id)
+		if mtup:
+			mtup["attending"] = attending
+			return mtup
