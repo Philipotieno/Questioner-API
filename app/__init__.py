@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 
 from instance.config import app_config
 from app.api.v1.views.usersviews import v1_user
@@ -16,5 +16,8 @@ def create_app(env_name):
 	app.register_blueprint(v1_meetups, url_prefix='/v1/meetups')
 	app.register_blueprint(v1_questions, url_prefix='/api/v1/questions')
 
+	@app.route('/', methods=['GET'])
+	def index():
+		return jsonify({"Message" : "welcome to questioner"})
 
 	return app
