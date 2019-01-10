@@ -36,6 +36,18 @@ def upvote_qns(question_id):
 	if not qn:
 		return jsonify({"status":404, 'message' : 'question not found',}), 404
 
-	votes = data['votes']
-	questions_inst.upvote_qn(question_id, votes)
+	upvotes = data['upvotes']
+	questions_inst.upvote_qn(question_id, upvotes)
 	return jsonify({"status":404, 'message' : 'you have upvoted a question', 'Question' : qn}), 200
+
+@v1_questions.route('<question_id>/downvote', methods=['PUT'])
+def downvote_qns(question_id):
+	data = request.get_json()
+
+	qn = questions_inst.get_specific_question(question_id)
+	if not qn:
+		return jsonify({"status":404, 'message' : 'question not found',}), 404
+
+	downvotes = data['downvotes']
+	questions_inst.downvote_qn(question_id, downvotes)
+	return jsonify({"status":200, 'message' : 'you have downvoted a question', 'Question' : qn}), 200
