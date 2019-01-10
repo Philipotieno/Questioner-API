@@ -34,8 +34,8 @@ def upvote_qns(question_id):
 
 	qn = questions_inst.get_specific_question(question_id)
 	if not qn:
-		return jsonify({'message' : 'question not found'})
+		return jsonify({"status":404, 'message' : 'question not found',}), 404
 
 	votes = data['votes']
 	questions_inst.upvote_qn(question_id, votes)
-	return jsonify({'message' : 'you have upvoted a question', 'Question' : qn})
+	return jsonify({"status":404, 'message' : 'you have upvoted a question', 'Question' : qn}), 200
