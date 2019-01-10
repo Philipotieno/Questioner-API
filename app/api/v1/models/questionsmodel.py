@@ -15,7 +15,8 @@ class Question():
 			"title":title,
 			"body":body,
 			"createdon":now,
-			"votes" : 0
+			"upvotes" : 0,
+			"downvotes" : 0
 	
 		}
 
@@ -34,9 +35,16 @@ class Question():
 				if qns["id"] == question_id:
 					return qns
 
-	def upvote_qn(self, question_id, votes):
-		""" Method to answer a specific question"""
+	def upvote_qn(self, question_id, upvotes):
+		""" Method to upvote a specific question"""
 		asked_qns = self.get_specific_question(question_id)
 		if asked_qns:
-			asked_qns["votes"] = votes
+			asked_qns["upvotes"] = upvotes
+			return asked_qns
+
+	def downvote_qn(self, question_id, downvotes):
+		""" Method to downvote a specific question"""
+		asked_qns = self.get_specific_question(question_id)
+		if asked_qns:
+			asked_qns["downvotes"] = downvotes
 			return asked_qns
