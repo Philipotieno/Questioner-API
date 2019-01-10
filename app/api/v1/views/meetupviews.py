@@ -54,7 +54,7 @@ def rsvp_meetup(meetup_id):
 	if not new_status:
 		return jsonify({'message': 'Please input all required fields!'}), 400
 	if (new_status != "maybe" and new_status != "yes" and new_status != "no"):
-		return jsonify({'error' : 'response must be yes no or maybe'})
+		return jsonify({'error' : 'response must be yes no or maybe', "status":400}), 400
 	meetups.response(meetup_id, new_status)
 
-	return jsonify({'message' : 'your response has been recorded'})
+	return jsonify({'message' : 'your response has been recorded'}), 200
