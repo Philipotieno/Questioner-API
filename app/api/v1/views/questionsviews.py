@@ -28,3 +28,14 @@ def create_question():
 		
 	return jsonify({'Message' : 'Question created successfully', 'Question' : questions_inst.questions, "status":201}), 201
 
+@v1_questions.route('<question_id>/upvote', methods=['PUT'])
+def upvote_qns(question_id):
+	data = request.get_json()
+
+	qn = questions_inst.get_specific_question(question_id)
+	if not qn:
+		return jsonify({'message' : 'question not found'})
+
+	votes = data['votes']
+	questions_inst.upvote_qn(question_id, votes)
+	return jsonify({'message' : 'you have upvoted a question', 'Question' : qn})
