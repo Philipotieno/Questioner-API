@@ -26,6 +26,14 @@ class TestMeetup(TestSetup):
             content_type='application/json')
         self.assertEqual(res.status_code, 200)
 
+    def test_non_exixting_meetup(self):
+
+        res = self.client.get(
+            '/api/v1/meetups/12',
+            data=json.dumps(self.meetup_1),
+            content_type='application/json')
+        self.assertEqual(res.status_code, 404)
+
     def test_get_all_meetup(self):
 
         res = self.client.get(
@@ -33,6 +41,14 @@ class TestMeetup(TestSetup):
             data=json.dumps(self.meetup_1),
             content_type='application/json')
         self.assertEqual(res.status_code, 200)
+
+    # def test_for_no_meetup(self):
+
+    #     res = self.client.get(
+    #         '/api/v1/meetups/upcoming',
+    #         data=json.dumps(self.meetup_23),
+    #         content_type='application/json')
+    #     self.assertEqual(res.status_code, 404)
 
 
 if __name__ == '__main__':
