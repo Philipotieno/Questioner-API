@@ -55,6 +55,13 @@ class TestMeetup(TestSetup):
             content_type='application/json')
         self.assertEqual(res.status_code, 200)
 
+    def test_rsvp_non_existent_status(self):
+
+        res = self.client.post(
+            '/api/v1/meetups/44/rsvp',
+            data=json.dumps(dict(attending="nono")),
+            content_type='application/json')
+        self.assertEqual(res.status_code, 400)
+
 if __name__ == '__main__':
     unittest.main()
-    
