@@ -7,8 +7,6 @@ class TestMeetup(TestSetup):
 
     def test_created_meetup(self):
         """ Test new meetup can be created """
-
-        # place an order
         res = self.client.post(
             '/api/v1/meetups',
             data=json.dumps(self.meetup_2),
