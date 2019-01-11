@@ -51,8 +51,7 @@ class TestSetup(unittest.TestCase):
             '/api/v1/users/login',
             data=json.dumps(self.user_1),
             content_type='application/json')
-        # self.data = json.loads(self.login.data.decode("UTF-8"))
-
+      
 
         self.meetup_1 = {
             "topic" : "testtopic",
@@ -69,10 +68,12 @@ class TestSetup(unittest.TestCase):
         }
 
         self.create_meetup = self.client.post(
-            '/v1/meetups',
+            '/api/v1/meetups',
             data=json.dumps(self.meetup_1),
             content_type='application/json')
 
     def tearDown(self):
         self.users = user.users
+        self.meetups = meetup.meetups
         self.users.clear()
+        self.meetups.clear()
