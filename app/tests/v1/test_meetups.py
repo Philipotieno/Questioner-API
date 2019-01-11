@@ -8,7 +8,6 @@ class TestMeetup(TestSetup):
     def test_created_meetup(self):
         """ Test new meetup can be created """
 
-        # place an order
         res = self.client.post(
             '/api/v1/meetups',
             data=json.dumps(self.meetup_2),
@@ -17,7 +16,17 @@ class TestMeetup(TestSetup):
         msg = json.loads(res.data.decode("UTF-8"))
         self.assertIn("Meetup created successfully", msg["Message"])
 
+    def test_empty_meetup_field(self):
+        """ Test new meetup can be created """
 
+        res = self.client.post(
+            '/api/v1/meetups',
+            data=json.dumps(self.meetup_3),
+            content_type='application/json')
+        self.assertEqual(res.status_code, 400)
+        msg = json.loads(res.data.decode("UTF-8"))
+        self.assertIn("Please input all required fields!", msg["message"])
+    
     def test_get_specific_meetup(self):
 
         res = self.client.get(
