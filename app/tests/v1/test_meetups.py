@@ -16,3 +16,19 @@ class TestMeetup(TestSetup):
         self.assertEqual(res.status_code, 201)
         msg = json.loads(res.data.decode("UTF-8"))
         self.assertIn("Meetup created successfully", msg["Message"])
+
+
+    def test_get_specific_meetup(self):
+        self.client.post(
+            '/api/v1/meetups',
+            data=json.dumps(self.meetup_1),
+            content_type='application/json')
+
+        res = self.client.get(
+            '/api/v1/meetups/1',
+            data=json.dumps(self.meetup_1),
+            content_type='application/json')
+        self.assertEqual(res.status_code, 200)
+
+if __name__ == '__main__':
+    unittest.main()
