@@ -12,7 +12,7 @@ def create_app(env_name):
 
 	app = Flask(__name__)
 	app.config.from_object(app_config[env_name])
-	app.register_blueprint(v1_user, url_prefix='/v1')
+	app.register_blueprint(v1_user, url_prefix='/api/v1/users')
 	app.register_blueprint(v1_meetups, url_prefix='/api/v1/meetups')
 	app.register_blueprint(v1_questions, url_prefix='/api/v1/questions')
 
