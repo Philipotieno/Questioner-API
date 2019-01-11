@@ -10,7 +10,7 @@ class TestUser(TestSetup):
 
         # register a user
         res = self.client.post(
-            '/v1/register',
+            '/api/v1/users/register',
             data=json.dumps(self.user_2),
             content_type='application/json')
 
@@ -22,12 +22,12 @@ class TestUser(TestSetup):
 
     def test_registered_user_login(self):
         self.client.post(
-            '/v1/register',
+            '/api/v1/users/register',
             data=json.dumps(self.user_1),
             content_type='application/json')
 
         res = self.client.post(
-            '/v1/login',
+            '/api/v1/users/login',
             data=json.dumps(self.user_1),
             content_type='application/json')
         msg = json.loads(res.data.decode('UTF-8'))

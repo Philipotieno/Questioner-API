@@ -10,7 +10,7 @@ class TestMeetup(TestSetup):
 
         # place an order
         res = self.client.post(
-            '/v1/meetups',
+            '/api/v1/meetups',
             data=json.dumps(self.meetup_2),
             content_type='application/json')
         self.assertEqual(res.status_code, 201)

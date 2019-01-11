@@ -35,16 +35,23 @@ class TestSetup(unittest.TestCase):
             "password" : "password"
         }
 
+        self.add_meetup = {
+            "topic" : "pytest",
+            "location" : "kisumu",
+            "tags" : "test tag",
+            "happeningOn" : "1/1/2019",
+        }
+
         self.register = self.client.post(
-        	'/v1/register',
+        	'/api/v1/users/register',
             data=json.dumps(self.user_1),
             content_type='application/json')
 
         self.login = self.client.post(
-            '/v1/login',
+            '/api/v1/users/login',
             data=json.dumps(self.user_1),
             content_type='application/json')
-        self.data = json.loads(self.login.data.decode("UTF-8"))
+        # self.data = json.loads(self.login.data.decode("UTF-8"))
 
 
         self.meetup_1 = {
