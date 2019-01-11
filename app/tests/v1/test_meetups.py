@@ -19,10 +19,6 @@ class TestMeetup(TestSetup):
 
 
     def test_get_specific_meetup(self):
-        self.client.post(
-            '/api/v1/meetups',
-            data=json.dumps(self.meetup_1),
-            content_type='application/json')
 
         res = self.client.get(
             '/api/v1/meetups/1',
@@ -30,5 +26,16 @@ class TestMeetup(TestSetup):
             content_type='application/json')
         self.assertEqual(res.status_code, 200)
 
+    def test_get_all_meetup(self):
+
+        res = self.client.get(
+            '/api/v1/meetups/upcoming',
+            data=json.dumps(self.meetup_1),
+            content_type='application/json')
+        self.assertEqual(res.status_code, 200)
+
+
 if __name__ == '__main__':
     unittest.main()
+
+    32393053
