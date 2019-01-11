@@ -42,16 +42,19 @@ class TestMeetup(TestSetup):
             content_type='application/json')
         self.assertEqual(res.status_code, 200)
 
-    # def test_for_no_meetup(self):
+    def test_rsvp_meetup(self):
 
-    #     res = self.client.get(
-    #         '/api/v1/meetups/upcoming',
-    #         data=json.dumps(self.meetup_23),
-    #         content_type='application/json')
-    #     self.assertEqual(res.status_code, 404)
+        self.client.post(
+            '/api/v1/meetups/1',
+            data=json.dumps(self.add_meetup),
+            content_type='application/json')
 
+        res = self.client.post(
+            '/api/v1/meetups/1/rsvp',
+            data=json.dumps(dict(attending="maybe")),
+            content_type='application/json')
+        self.assertEqual(res.status_code, 200)
 
 if __name__ == '__main__':
     unittest.main()
-
-    32393053
+    
