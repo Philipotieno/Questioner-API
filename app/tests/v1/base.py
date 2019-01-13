@@ -74,14 +74,19 @@ class TestSetup(unittest.TestCase):
             "body" : "this is a test body_3"
         }
 
-        self.ask_qn = self.client.post(
-            '/api/v1/questions',
-            data=json.dumps(self.question_1),
-            content_type="application/json"
-            )
+        self.upvote = {
+            "user":3,
+            "upvotes":1
+        }
+
+        self.downvote = {
+            "user":3,
+            "downvotes":1
+        }
+
 
         self.register = self.client.post(
-        	'/api/v1/users/register',
+            '/api/v1/users/register',
             data=json.dumps(self.user_1),
             content_type='application/json')
 
@@ -94,6 +99,11 @@ class TestSetup(unittest.TestCase):
             '/api/v1/meetups',
             data=json.dumps(self.meetup_1),
             content_type='application/json')
+        self.ask_qn = self.client.post(
+            '/api/v1/questions',
+            data=json.dumps(self.question_1),
+            content_type="application/json"
+            )
 
     def tearDown(self):
         self.users = user.users
