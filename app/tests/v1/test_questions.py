@@ -6,7 +6,7 @@ from app.tests.v1.base import TestSetup
 class TestQuestion(TestSetup):
 
     def test_asked_question(self):
-        """ Test new meetup can be created """
+        """ Test ask a question """
         res = self.client.post(
             '/api/v1/questions',
             data=json.dumps(self.question_2),
@@ -15,7 +15,22 @@ class TestQuestion(TestSetup):
         msg = json.loads(res.data.decode("UTF-8"))
         self.assertIn("Question created successfully", msg["Message"])
 
+    def test_upvote_a_question(self):
+        """ Test upvote a question """
+        self.client.post(
+            '/api/v1/questions',
+            data=json.dumps(self.question_2),
+            content_type='application/json')
+
+        res = self.client.put(
+            '/api/v1/questions/1/upvote',
+            data=json.dumps(self.upvote),
+            content_type='application/json')
+        self.assertEqual(res.status_code, 200)
+        msg = json.loads(res.data.decode("UTF-8"))
+        self.assertIn("you have upvoted a question", msg["message"])
+
+
 
 if __name__ == '__main__':
     unittest.main()
-    
