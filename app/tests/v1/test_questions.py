@@ -56,5 +56,16 @@ class TestQuestion(TestSetup):
         msg = json.loads(res.data.decode("UTF-8"))
         self.assertIn("question not found", msg["message"])
 
+    def test_downvote_a_non_question(self):
+        """ Test upvote non existing question """
+
+        res = self.client.put(
+            '/api/v1/questions/13/downvote',
+            data=json.dumps(self.downvote),
+            content_type='application/json')
+        self.assertEqual(res.status_code, 404)
+        msg = json.loads(res.data.decode("UTF-8"))
+        self.assertIn("question not found", msg["message"])
+
 if __name__ == '__main__':
     unittest.main()
