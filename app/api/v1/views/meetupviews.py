@@ -32,6 +32,13 @@ def create_meetup():
         except ValueError as e:
             return jsonify({'message' : str(e)})
 
+    meetups.create_meetup(
+        topic=topic,
+        location=location,
+        tags=tags,
+        happeningOn=happeningOn
+        )
+
     return jsonify({'Message' : 'Meetup created successfully'}), 201
 
 @v1_meetups.route('/upcoming', methods=['GET'])
@@ -39,14 +46,6 @@ def get_meetups():
     all_meetups = meetups.get_all_meetups()
     if not all_meetups:
         return jsonify({'message' : 'No meetups', "status": 200}), 200
-
-
-    meetups.create_meetup(
-        topic=topic,
-        location=location,
-        tags=tags,
-        happeningOn=happeningOn
-        )
 
     return jsonify({"meetups" : all_meetups, "status": 200}), 200
 
@@ -62,8 +61,8 @@ def get_specific_meetup(meetup_id):
 def rsvp_meetup(meetup_id):
     data = request.get_json()
 
-    all_meetup = meetups.get_all_meetups()
-    if not all_meetup:
+    a_meetup = meetups.get_specific_meetup(meetup_id)
+    if not a_meetup:
         return jsonify({'message' : 'meetup does not exist', "status" : 404}), 404
     
     new_status = data['attending']
