@@ -49,18 +49,18 @@ class TestMeetup(TestSetup):
         self.assertEqual(res.status_code, 404)
 
 
-    # def test_rsvp_meetup(self):
+    def test_rsvp_meetup(self):
 
-    #     self.client.post(
-    #         '/api/v1/meetups/1',
-    #         data=json.dumps(self.add_meetup),
-    #         content_type='application/json')
+        self.client.post(
+            '/api/v1/meetups/1',
+            data=json.dumps(self.add_meetup),
+            content_type='application/json')
 
-    #     res = self.client.post(
-    #         '/api/v1/meetups/1/rsvp',
-    #         data=json.dumps(dict(attending="maybe")),
-    #         content_type='application/json')
-    #     self.assertEqual(res.status_code, 200)
+        res = self.client.post(
+            '/api/v1/meetups/1/rsvp',
+            data=json.dumps(dict(attending="maybe")),
+            content_type='application/json')
+        self.assertEqual(res.status_code, 200)
 
     def test_rsvp_non_existent_status(self):
 
