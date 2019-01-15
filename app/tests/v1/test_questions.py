@@ -49,7 +49,7 @@ class TestQuestion(TestSetup):
         """ Test upvote non existing question """
 
         res = self.client.put(
-            '/api/v1/questions/13/upvote',
+            '/api/v1/questions/18/upvote',
             data=json.dumps(self.upvote),
             content_type='application/json')
         self.assertEqual(res.status_code, 404)

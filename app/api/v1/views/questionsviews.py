@@ -38,7 +38,7 @@ def upvote_qns(question_id):
 
 	upvotes = data['upvotes']
 	questions_inst.upvote_qn(question_id, upvotes)
-	return jsonify({"status":404, 'message' : 'you have upvoted a question', 'Question' : qn}), 200
+	return jsonify({"status":200, 'message' : 'you have upvoted a question', 'Question' : qn}), 200
 
 @v1_questions.route('<question_id>/downvote', methods=['PUT'])
 def downvote_qns(question_id):
