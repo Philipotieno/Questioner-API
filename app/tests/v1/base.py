@@ -59,6 +59,14 @@ class TestSetup(unittest.TestCase):
             "tags" : "tagtwo tagone",
             "happeningOn" : "11-12-2019"
         }
+        
+        self.meetup_3 = {
+            "topic" : "tes",
+            "location" : "testlocations",
+            "tags" : "tagtwo tagone",
+            "happeningOn" : "11-12-2019"
+        }
+
 
         self.question_1 = {
             "user" : 1,

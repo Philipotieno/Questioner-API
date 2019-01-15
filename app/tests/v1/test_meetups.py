@@ -15,6 +15,15 @@ class TestMeetup(TestSetup):
         msg = json.loads(res.data.decode("UTF-8"))
         self.assertIn("Meetup created successfully", msg["Message"])
 
+    def test_unvalidated_meetup(self):
+        """ Test new meetup can be created """
+        res = self.client.post(
+            '/api/v1/meetups',
+            data=json.dumps(self.meetup_3),
+            content_type='application/json')
+        self.assertEqual(res.status_code, 400)
+        msg = json.loads(res.data.decode("UTF-8"))
+        self.assertIn("length of topic, location and tag should not be less than 4", msg["message"])
 
     def test_get_all_meetup(self):
 
@@ -47,6 +56,8 @@ class TestMeetup(TestSetup):
             data=json.dumps(self.meetup_1),
             content_type='application/json')
         self.assertEqual(res.status_code, 404)
+        msg = json.loads(res.data.decode("UTF-8"))
+        self.assertIn("meetup does not exist", msg["message"])
 
 
     def test_rsvp_meetup(self):
@@ -61,6 +72,8 @@ class TestMeetup(TestSetup):
             data=json.dumps(dict(attending="maybe")),
             content_type='application/json')
         self.assertEqual(res.status_code, 200)
+        msg = json.loads(res.data.decode("UTF-8"))
+        self.assertIn("your response has been recorded", msg["message"])
 
     def test_rsvp_non_existent_status(self):
 
@@ -69,6 +82,8 @@ class TestMeetup(TestSetup):
             data=json.dumps(dict(attending="nono")),
             content_type='application/json')
         self.assertEqual(res.status_code, 404)
+        msg = json.loads(res.data.decode("UTF-8"))
+        self.assertIn("meetup does not exist", msg["message"])
 
 if __name__ == '__main__':
     unittest.main()
