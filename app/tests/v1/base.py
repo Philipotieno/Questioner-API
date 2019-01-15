@@ -40,8 +40,8 @@ class TestSetup(unittest.TestCase):
         self.add_meetup = {
             "topic" : "pytest",
             "location" : "kisumu",
-            "tags" : "test tag",
-            "happeningOn" : "1/1/2019",
+            "tags" : "test tags",
+            "happeningOn" : "1-1-2019",
         }
 
       
@@ -49,15 +49,15 @@ class TestSetup(unittest.TestCase):
         self.meetup_1 = {
             "topic" : "testtopic",
             "location" : "testlocation",
-            "tags" : "tagfour, tagfive",
-            "happeningOn" : "11/12/2019"
+            "tags" : "tagfour tagfive",
+            "happeningOn" : "11-12-2019"
         }
 
         self.meetup_2 = {
             "topic" : "testtopics",
             "location" : "testlocations",
-            "tags" : "tagtwo, tagone",
-            "happeningOn" : "11/12/2019"
+            "tags" : "tagtwo tagone",
+            "happeningOn" : "11-12-2019"
         }
 
         self.question_1 = {
@@ -99,6 +99,7 @@ class TestSetup(unittest.TestCase):
             '/api/v1/meetups',
             data=json.dumps(self.meetup_1),
             content_type='application/json')
+
         self.ask_qn = self.client.post(
             '/api/v1/questions',
             data=json.dumps(self.question_1),

@@ -1,7 +1,7 @@
 import re
 from flask import request, jsonify, Blueprint
 from app.api.v1.models.meetupsmodel import Meetup
-
+from datetime import datetime
 
 v1_meetups = Blueprint('meetups', __name__)
 
@@ -22,13 +22,19 @@ def create_meetup():
             happeningOn=happeningOn
         )
 
-    topic_format = re.compile(r"(^[A-Za-z]+$)")
+    data_format = re.compile(r"(^[A-Za-z\s]+$)")
 
-    if not (re.match(topic_format, topic)):
-        return jsonify({'message' : 'topic should contain letters only'}), 400
+    if not re.match(data_format, topic) or not re.match(data_format, location) or not re.match(data_format, tags):
+        return jsonify({'message' : 'topic/locaion/tag should contain letters only'}), 400
 
     if not topic or not location or not tags or not happeningOn:
         return jsonify({'message': 'Please input all required fields!'}), 400
+
+    if happeningOn:
+        try:
+            datetime.strptime(happeningOn, '%d-%m-%Y')
+        except ValueError as e:
+            return jsonify({'message' : str(e)})
 
     return jsonify({'Message' : 'Meetup created successfully'}), 201
 
