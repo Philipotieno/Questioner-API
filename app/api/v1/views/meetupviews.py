@@ -15,13 +15,6 @@ def create_meetup():
     tags = data['tags']
     happeningOn = data['happeningOn']
 
-    meetups.create_meetup(
-            topic=topic,
-            location=location,
-            tags=tags,
-            happeningOn=happeningOn
-        )
-
     data_format = re.compile(r"(^[A-Za-z\s]+$)")
 
     if not re.match(data_format, topic) or not re.match(data_format, location) or not re.match(data_format, tags):
@@ -29,6 +22,9 @@ def create_meetup():
 
     if not topic or not location or not tags or not happeningOn:
         return jsonify({'message': 'Please input all required fields!'}), 400
+
+    if len(topic) < 4 or len(location) < 4 or len(tags) < 4:
+        return jsonify({"message" : "length of topic, location and tag should not be less than 4"}), 400
 
     if happeningOn:
         try:
@@ -43,6 +39,14 @@ def get_meetups():
     all_meetups = meetups.get_all_meetups()
     if not all_meetups:
         return jsonify({'message' : 'No meetups', "status": 200}), 200
+
+
+    meetups.create_meetup(
+        topic=topic,
+        location=location,
+        tags=tags,
+        happeningOn=happeningOn
+        )
 
     return jsonify({"meetups" : all_meetups, "status": 200}), 200
 
