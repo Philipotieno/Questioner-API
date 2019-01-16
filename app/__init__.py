@@ -3,7 +3,7 @@ from flask import Flask, jsonify
 from instance.config import app_config
 from app.api.v2.views.usersviews import v2_user
 from app.api.v2.views.meetupviews import v2_meetups
-from app.api.v1.views.questionsviews import v2_questions
+from app.api.v2.views.questionsviews import v2_questions
 
 def create_app(env_name):
 	""" Cretae app """
