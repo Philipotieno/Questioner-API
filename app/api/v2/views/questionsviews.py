@@ -2,11 +2,11 @@ import os
 import psycopg2
 from flask import Blueprint, jsonify, request
 
-from app.api.v2.models.questionssmodels import Question
+from app.api.v2.models.questionsmodel import Question
 
 from app.api.v2.models.db import Database
 
-v2_user = Blueprint('users', __name__)
+v2_questions = Blueprint('uquestions', __name__)
 
 db = Database()
 cur = db.conn.cursor()
