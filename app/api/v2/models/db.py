@@ -1,73 +1,65 @@
 """Creates database and tables"""
-from psycopg2 import connect
-import os
+import psycopg2
 
+class Database:
+    # constructor initialize environment
+    def __init__(self):
+        self.host = 'localhost'
+        self.name = 'questioner'
+        self.user = 'mitch'
+        self.password = 'mufasa2019'
 
-def connect_to_db(config=None):
-	''' Function to create a connection to the right database'''
-	if config == 'testing':
-		db_name = 'testdb'
-	else:
-		db_name = 'questioner'
+        try: 
+            self.conn = psycopg2.connect(
+                host=self.host,
+                dbname=self.name,
+                user=self.user,
+                password=self.password)
+            print("successfully connected")
+        except:
+            print("Unable to connect to the database")
 
-	host = 'localhost'
-	user = 'mitch'
-	password = 'mufasa2019'
+    def create_tables(self):
+        """ Method to create tables """
+        users = '''CREATE TABLE IF NOT EXISTS users(
+                    user_id serial PRIMARY KEY,
+                    firstname VARCHAR NOT NULL UNIQUE,
+                    lastname VARCHAR NOT NULL UNIQUE,
+                    username VARCHAR NOT NULL UNIQUE,
+                    phone_number INT NOT NULL,
+                    email VARCHAR NOT NULL UNIQUE,
+                    password VARCHAR NOT NULL,
+                    admin bool);'''
 
-	return connect(
-        database=db_name,
-        host=host,
-        user=user,
-        password=password
-    )
+        meetups = '''CREATE TABLE IF NOT EXISTS meetups(
+                    meetup_id serial PRIMARY KEY,
+                    topic VARCHAR NOT NULL UNIQUE,
+                    location VARCHAR NOT NULL UNIQUE,
+                    happening_on TIMESTAMP,
+                    created_on TIMESTAMP);'''
 
-def create_users_table(cur):
-	cur.execute(
-		"""CREATE TABLE users(
-		user_id serial PRIMARY KEY,
-		firstname VARCHAR NOT NULL UNIQUE,
-		lastname VARCHAR NOT NULL UNIQUE,
-		username VARCHAR NOT NULL UNIQUE,
-		phone_number INT NOT NULL,
-		email VARCHAR NOT NULL UNIQUE,
-		password VARCHAR NOT NULL,
-		admin bool);""")
+        questions = '''CREATE TABLE IF NOT EXISTS questions(
+                    question_id serial PRIMARY KEY,
+                    user_id INTEGER REFERENCES users(user_id),
+                    meetup_id INTEGER REFERENCES meetups(meetup_id),
+                    title VARCHAR NOT NULL UNIQUE,
+                    body VARCHAR NOT NULL UNIQUE,
+                    created_on TIMESTAMP);'''
 
-def create_meetups_table(cur):
-	cur.execute(
-		"""CREATE TABLE meetups(
-		meetup_id serial PRIMARY KEY,
-		topic VARCHAR NOT NULL UNIQUE,
-		location VARCHAR NOT NULL UNIQUE,
-		happening_on TIMESTAMP,
-		created_on TIMESTAMP);""")
+        queries = [users, meetups, questions]
+        for q in queries:
+            self.cur = self.conn.cursor()
+            self.cur.execute(q)
+            self.conn.commit()
+            print("All tables created successfully!")
+            self.cur.close() #close communication with the database
 
-def create_questions_table(cur):
-	cur.execute(
-		"""CREATE TABLE questions(
-		question_id serial PRIMARY KEY,
-		user_id INTEGER REFERENCES users(user_id),
-		meetup_id INTEGER REFERENCES meetups(meetup_id),
-		title VARCHAR NOT NULL UNIQUE,
-		body VARCHAR NOT NULL UNIQUE,
-		created_on TIMESTAMP);""")
+    def drop_tables(self):
+        query = "DROP TABLE users, meetups, questions;"
+        self.cur.execute(query)
+        self.conn.commit()
+        print("All tables dropped successfully!")
+        self.cur.close()
 
-def main(config=None):
-	conn = connect_to_db(config=config)
-	conn.set_session(autocommit=True)
-	cur = conn.cursor() #cursor to perform database operations
-	cur.execute("""DROP TABLE IF EXISTS users CASCADE""")
-	cur.execute("""DROP TABLE IF EXISTS meetups CASCADE""")
-	cur.execute("""DROP TABLE IF EXISTS questions CASCADE""")
-
-	create_users_table(cur)
-	create_meetups_table(cur)
-	create_questions_table(cur)
-
-	cur.close() #close communication with the database
-	conn.commit() # Make the changes to the database persistent
-	conn.close()
-	print('Database created')
-
-if __name__ == '__main__':
-    main()
+p = Database()
+p.create_tables()

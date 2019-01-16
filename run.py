@@ -5,4 +5,5 @@ env_name = os.getenv('FLASK_ENV')
 app = create_app(env_name)
 
 if __name__ == '__main__':
+	# fires up the app
 	app.run(debug=True)
