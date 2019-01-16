@@ -7,7 +7,7 @@ from app.api.v2.models.usersmodels import User
 from app.api.v2.views.validator import validate_register
 from app.api.v2.models.db import Database
 
-v2_user = Blueprint('users', __name__)
+v2_user = Blueprint('v2_users', __name__)
 
 db = Database()
 cur = db.cur

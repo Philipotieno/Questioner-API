@@ -6,7 +6,7 @@ from app.api.v2.models.meetupsmodel import Meetup
 
 from app.api.v2.models.db import Database
 
-v2_meetups = Blueprint('meetups', __name__)
+v2_meetups = Blueprint('v2_meetups', __name__)
 
 db = Database()
 cur = db.conn.cursor()
