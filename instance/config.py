@@ -1,11 +1,13 @@
+#!/usr/bin/env python
+"""Contains configurations for defferent environments"""
 import os
 
 #config.py
 class Config(object):
-	"""Parent/default configutaion"""
-	DEBUG = False
-	TESTING = False
-	SECRET_KEY = os.getenv('SECRET_KEY')
+    """Parent/default configutaion"""
+    DEBUG = False
+    TESTING = False
+    SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 class TestingConfig(Config):
