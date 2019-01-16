@@ -1,5 +1,6 @@
 """Creates database and tables"""
 import psycopg2
+from psycopg2.extras import RealDictCursor
 
 class Database:
     # constructor initialize environment
@@ -15,6 +16,7 @@ class Database:
                 dbname=self.name,
                 user=self.user,
                 password=self.password)
+            self.cur = self.conn.cursor(cursor_factory=RealDictCursor)
             print("successfully connected")
         except:
             print("Unable to connect to the database")
@@ -48,11 +50,10 @@ class Database:
 
         queries = [users, meetups, questions]
         for q in queries:
-            self.cur = self.conn.cursor()
             self.cur.execute(q)
             self.conn.commit()
-            print("All tables created successfully!")
-            self.cur.close() #close communication with the database
+        print("All tables created successfully!")
+        self.cur.close() #close communication with the database
 
     def drop_tables(self):
         query = "DROP TABLE users, meetups, questions;"
