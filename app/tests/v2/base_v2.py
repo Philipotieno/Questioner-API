@@ -82,22 +82,6 @@ class TestSetup(unittest.TestCase):
             "body" : "this is a test body_3"
         }
 
-        # self.login = self.client.post(
-        #     '/api/v2/auth/login',
-        #     data=json.dumps(self.user_1),
-        #     content_type='application/json')
-
-        # self.create_meetup = self.client.post(
-        #     '/api/v2/meetups',
-        #     data=json.dumps(self.meetup_1),
-        #     content_type='application/json')
-
-        # self.ask_qn = self.client.post(
-        #     '/api/v2/questions',
-        #     data=json.dumps(self.question_1),
-        #     content_type="application/json"
-        #     )
-
     def tearDown(self):
         user = "DELETE FROM users WHERE username='testuser';"
         meetup = "DELETE FROM meetups WHERE topic='test_topic';"
