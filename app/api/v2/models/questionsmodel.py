@@ -11,17 +11,17 @@ class Question(object):
 
     def __init__(self):
     	pass
-        
-	@staticmetho
-	def ask_question(self, createdon, user, meetup, title, body):
-		pass
 
-	@staticmetho
-	def get_all_questions(self):
-		'''Method to fetch all questions'''
-		pass
+    @staticmethod
+    def ask_question(self, createdon, user, meetup, title, body):
+    	pass
 
-	@staticmetho
-	def get_specific_question(self, question_id):
-		""" Fetch a specific question using given id"""
-		pass
+    @staticmethod
+    def get_all_questions(self):
+    	'''Method to fetch all questions'''
+    	pass
+
+    @staticmethod
+    def get_specific_question(self, question_id):
+    	""" Fetch a specific question using given id"""
+    	pass

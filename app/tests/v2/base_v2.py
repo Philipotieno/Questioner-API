@@ -20,21 +20,20 @@ class TestSetup(unittest.TestCase):
         self.client = self.app.test_client()
 
         self.user_1 = {
-            "firstname" : "tfirstname",
-            "lastname" : "lastname",
+            "firstname" : "testfirstname",
+            "lastname" : "testlastname",
             "username" : "testuser",
             "email" : "email@gmail.com",
-            "phone" : "07034744",
+            "phone_number" : "0703473377",
             "password" : "password"
         }
 
-        """not registered"""
         self.user_2 = {
             "firstname" : "testuser",
             "lastname" : "lastname",
             "username" : "testuserame",
             "email" : "emailwe3@gmail.com",
-            "phone" : "07034744",
+            "phone_number" : "070347446",
             "password" : "password"
         }
 
@@ -83,30 +82,25 @@ class TestSetup(unittest.TestCase):
             "body" : "this is a test body_3"
         }
 
-        self.register = self.client.post(
-            '/api/v1/users/register',
-            data=json.dumps(self.user_1),
-            content_type='application/json')
+        # self.login = self.client.post(
+        #     '/api/v2/auth/login',
+        #     data=json.dumps(self.user_1),
+        #     content_type='application/json')
 
-        self.login = self.client.post(
-            '/api/v1/users/login',
-            data=json.dumps(self.user_1),
-            content_type='application/json')
+        # self.create_meetup = self.client.post(
+        #     '/api/v2/meetups',
+        #     data=json.dumps(self.meetup_1),
+        #     content_type='application/json')
 
-        self.create_meetup = self.client.post(
-            '/api/v1/meetups',
-            data=json.dumps(self.meetup_1),
-            content_type='application/json')
-
-        self.ask_qn = self.client.post(
-            '/api/v1/questions',
-            data=json.dumps(self.question_1),
-            content_type="application/json"
-            )
+        # self.ask_qn = self.client.post(
+        #     '/api/v2/questions',
+        #     data=json.dumps(self.question_1),
+        #     content_type="application/json"
+        #     )
 
     def tearDown(self):
         user = "DELETE FROM users WHERE username='testuser';"
-        meetup = "DELETE FROM meetup WHERE topic='test_topic';"
+        meetup = "DELETE FROM meetups WHERE topic='test_topic';"
         queries = [user, meetup]
         for query in queries:
             cur.execute(query)

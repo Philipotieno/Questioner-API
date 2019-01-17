@@ -1,7 +1,7 @@
 import unittest
 import json
 
-from app.tests.v1.base import TestSetup
+from app.tests.v2.base_v2 import TestSetup
 
 class TestQuestion(TestSetup):
 
