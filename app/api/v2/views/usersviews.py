@@ -44,6 +44,9 @@ def registered_user():
 def login():
     data = request.get_json()
 
+    if not data or not data["username"] or not data["password"]:
+        return jsonify({'message': 'Username and password required!'}), 400
+
     query = "SELECT username, password from users WHERE username=%s;"
     cur.execute(query, (data['username'],))
     user = cur.fetchone()
