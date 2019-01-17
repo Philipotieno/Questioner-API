@@ -41,4 +41,16 @@ def registered_user():
 	
 @v2_user.route('/login', methods=['POST'])
 def login():
-	pass
+    data = request.get_json()
+
+    query = "SELECT username, password from users WHERE username=%s;"
+    cur.execute(query, (data['username'],))
+    user = cur.fetchone()
+
+    if not user:
+        return jsonify({'message': 'Incorrect username'}), 401
+
+    if user['password'] == data["password"]:
+        return jsonify({'message': 'Login success!'}), 200
+
+    return jsonify({'message': 'Incorrect password'}), 401
