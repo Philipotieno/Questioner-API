@@ -15,9 +15,9 @@ class TestUser(TestSetup):
             content_type='application/json')
 
         self.assertEqual(res.status_code, 201)
-        # msg = json.loads(res.data.decode("UTF-8"))
-        # self.assertIn('User Registered successfully!', msg['message'])
-        # self.assertTrue(res.content_type == 'application/json')
+        msg = json.loads(res.data.decode("UTF-8"))
+        self.assertIn('User Registered successfully!', msg['message'])
+        self.assertTrue(res.content_type == 'application/json')
 
 
     def test_registered_user_login(self):
