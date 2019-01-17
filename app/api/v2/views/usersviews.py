@@ -1,6 +1,7 @@
 import os
 import psycopg2
 from flask import Blueprint, jsonify, request
+from werkzeug.security import generate_password_hash, check_password_hash
 
 #local imports
 from app.api.v2.models.usersmodels import User
@@ -25,14 +26,14 @@ def registered_user():
         if name['username'] == data['username']:
             return jsonify({'message': 'User already exists!'}), 409
             
-    password = data['password']
+    hashed_password = generate_password_hash(data['password'], method='sha256')
     user_details = User(
         data['firstname'],
         data['lastname'],
         data['username'],
         data['phone_number'],
         data['email'],
-        password
+        hashed_password
     )
 
     if user_details.register_user():
@@ -41,4 +42,19 @@ def registered_user():
 	
 @v2_user.route('/login', methods=['POST'])
 def login():
-	pass
+    data = request.get_json()
+
+    if not data or not data["username"] or not data["password"]:
+        return jsonify({'message': 'Username and password required!'}), 400
+
+    query = "SELECT username, password from users WHERE username=%s;"
+    cur.execute(query, (data['username'],))
+    user = cur.fetchone()
+
+    if not user:
+        return jsonify({'message': 'Incorrect username'}), 401
+
+    if check_password_hash(user['password'], data["password"]):
+        return jsonify({'message': 'You are now logged in'}), 200
+
+    return jsonify({'message': 'Incorrect password'}), 401
