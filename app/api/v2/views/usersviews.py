@@ -52,6 +52,6 @@ def login():
         return jsonify({'message': 'Incorrect username'}), 401
 
     if check_password_hash(user['password'], data["password"]):
-        return jsonify({'message': 'Login success!'}), 200
+        return jsonify({'message': 'You are now logged in'}), 200
 
     return jsonify({'message': 'Incorrect password'}), 401
