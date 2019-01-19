@@ -29,11 +29,9 @@ class TestUser(TestSetup):
         res = self.client.post(
             '/api/v2/auth/login',
             data=json.dumps(self.user_1),
+
             content_type='application/json')
         msg = json.loads(res.data.decode('UTF-8'))
         self.assertIn('You are now logged in', msg['message'])
         self.assertTrue(res.content_type == 'application/json')
         self.assertEqual(res.status_code, 200)
-
-if __name__ == '__main__':
-    unittest.main()
