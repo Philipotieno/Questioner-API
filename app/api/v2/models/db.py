@@ -25,9 +25,9 @@ class Database:
         """ Method to create tables """
         users = '''CREATE TABLE IF NOT EXISTS users(
                     user_id serial PRIMARY KEY,
-                    firstname VARCHAR NOT NULL UNIQUE,
-                    lastname VARCHAR NOT NULL UNIQUE,
-                    username VARCHAR NOT NULL UNIQUE,
+                    firstname VARCHAR NOT NULL,
+                    lastname VARCHAR NOT NULL,
+                    username VARCHAR UNIQUE NOT NULL,
                     phone_number INT NOT NULL,
                     email VARCHAR NOT NULL UNIQUE,
                     password VARCHAR NOT NULL,
@@ -35,8 +35,9 @@ class Database:
 
         meetups = '''CREATE TABLE IF NOT EXISTS meetups(
                     meetup_id serial PRIMARY KEY,
-                    topic VARCHAR NOT NULL UNIQUE,
-                    location VARCHAR NOT NULL UNIQUE,
+                    topic VARCHAR NOT NULL,
+                    location VARCHAR NOT NULL,
+                    tags VARCHAR NOT NULL,
                     happening_on TIMESTAMP,
                     created_on TIMESTAMP);'''
 
