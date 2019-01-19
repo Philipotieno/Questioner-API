@@ -2,6 +2,8 @@ import os
 import psycopg2
 from flask import Blueprint, jsonify, request
 from werkzeug.security import generate_password_hash, check_password_hash
+import jwt
+import datetime
 
 #local imports
 from app.api.v2.models.usersmodels import User
@@ -55,6 +57,11 @@ def login():
         return jsonify({'message': 'Incorrect username'}), 401
 
     if check_password_hash(user['password'], data["password"]):
-        return jsonify({'message': 'You are now logged in'}), 200
+        token = jwt.encode(
+            {"username" : user["username"],
+            "exp" : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
+            str(os.getenv('SECRET_KEY')), algorithm='HS256')
+        return jsonify({'message': 'You are now logged in', 
+                        'token': token.decode('UTF-8')}), 200
 
     return jsonify({'message': 'Incorrect password'}), 401
