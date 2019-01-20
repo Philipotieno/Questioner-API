@@ -42,7 +42,7 @@ class User(object):
         
     @staticmethod
     def get_user_by_id(user_id):
-        query = "SELECT * FROM users WHERE id=%s;"
+        query = "SELECT * FROM users WHERE user_id=%s;"
         cur.execute(query, (user_id, ))
         user = cur.fetchone()
         if user:

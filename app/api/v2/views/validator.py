@@ -28,6 +28,11 @@ def validate_register(data):
     if validate_password(data):
         return validate_password(data)
 
+def validate_meetup(data):
+    #validate firstname
+    if validate_topic(data):
+        return validate_topic(data)
+
 def validate_firstname(data):
     """Validate firstname"""
     if not re.match(r'^[a-zA-Z]', data['firstname']):
@@ -63,4 +68,10 @@ def validate_password(data):
     """Validate password"""
     if not re.match(r'^[\w\W]{6,}$', data['password']):
         msg = "Password must be at least 6 characters long"
+        return jsonify({'message': msg}), 400
+
+def validate_topic(data):
+    """Validate topic"""
+    if not re.match(r'^[a-zA-Z0-9]{3,15}$', data['topic']):
+        msg = "Username should have letters or numbers or a combination of both and should be 5 or more characters long"
         return jsonify({'message': msg}), 400
