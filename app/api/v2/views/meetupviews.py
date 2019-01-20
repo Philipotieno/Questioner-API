@@ -14,7 +14,7 @@ v2_meetups = Blueprint('v2_meetups', __name__)
 def create_meetup():
     data = request.get_json()
     if validate_meetup(data):
-    	return validate_meetup(data)
+        return validate_meetup(data)
 
     if not data or not data["topic"] or not data["location"] or not data["happening_on"] or not data["tags"]:
         return jsonify({'message': 'All fields are required!'}), 400
@@ -26,12 +26,24 @@ def create_meetup():
         data['happening_on']
     )
     if meetup_details.create_meetup():
-    	return jsonify({'message': 'Meetup created!'}), 201
+        return jsonify({'message': 'Meetup created!'}), 201
     return jsonify({'message': 'Topic {} already exists choose another topic'.format(data['topic'])}), 409
 
 @v2_meetups.route('/upcoming', methods=['GET'])
 def get_meetups():
-    pass
+    upcoming = Meetup.get_all_meetups()
+    if upcoming:
+        meetup = [{
+            "id": meetup["meetup_id"],
+            "topic": meetup["topic"],
+            "location": meetup["location"],
+            "location": meetup["location"],
+            "tags": meetup["tags"],
+            "happening_on": meetup["happening_on"],
+            "created_on": meetup["created_on"]
+        } for meetup in upcoming]
+        return jsonify({'Meetups': meetup}), 200
+    return jsonify({'message': 'No meetups available!'})
 
 @v2_meetups.route('<meetup_id>', methods=['GET'])
 def get_specific_meetup(meetup_id):
