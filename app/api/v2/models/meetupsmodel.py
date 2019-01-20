@@ -3,7 +3,7 @@ from app.api.v2.models.db import Database
 
 now = datetime.datetime.now()
 db = Database()
-cur = db.conn.cursor()
+cur = db.cur
 
 class Meetup():
 
@@ -37,9 +37,12 @@ class Meetup():
         return True
 
     staticmethod
-    def get_all_meetups(self):
+    def get_all_meetups():
         '''Method to fetch all meetups'''
-        pass
+        query = "SELECT * from meetups;"
+        cur.execute(query)
+        meetups = cur.fetchall()
+        return meetups
 
     @staticmethod
     def get_specific_meetup(self, meetup_id):
