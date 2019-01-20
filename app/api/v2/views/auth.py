@@ -16,20 +16,20 @@ def authentication(f):
     def decorated(*args, **kwargs):
         token = None
 
-        if 'access-token' in request.headers:
-            token = request.headers['access-token']
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization']
 
         if not token:
             return jsonify({'message': 'Token not found'}), 401
 
         try:
-            data = jwt.decode(token, os.getenv('SECRET_KEY'))
+            data = jwt.decode(token, os.getenv('SECRET_KEY')).decode('utf-8')
             query = "SELECT * from users WHERE username=%s;"
             cur.execute(query, (data['username'],))
             current_user = cur.fetchone()
 
-        except:
-            return jsonify({'message': 'Token is invalid!'}), 401
+        except Exception as e:
+            return jsonify({'message': 'An error occured while decoding token.', 'error':str(e)}), 400
 
         return f(current_user, *args, **kwargs)
 
