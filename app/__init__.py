@@ -20,7 +20,7 @@ def create_app(env_name):
 	app.register_blueprint(v1_meetups, url_prefix='/api/v1/meetups')
 	app.register_blueprint(v2_meetups, url_prefix='/api/v2/meetups')
 	app.register_blueprint(v1_questions, url_prefix='/api/v1/questions')
-	app.register_blueprint(v2_questions, url_prefix='/api/v1/questions')
+	app.register_blueprint(v2_questions, url_prefix='/api/v2/questions')
 
 	@app.route('/')
 	def index():

@@ -45,6 +45,9 @@ class Meetup():
         return meetups
 
     @staticmethod
-    def get_specific_meetup(self, meetup_id):
-        """ Fetch a specific meet using meetup_id"""
-        pass
+    def get_meetup_by_id(meetup_id):
+        """ Fetch a specific meetup using meetup_id"""
+        query = "SELECT * from meetups where meetup_id=%s;"
+        cur.execute(query, (meetup_id,))
+        meetup = cur.fetchone()
+        return meetup
