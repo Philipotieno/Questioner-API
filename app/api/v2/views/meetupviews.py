@@ -33,18 +33,12 @@ def create_meetup():
 def get_meetups():
     upcoming = Meetup.get_all_meetups()
     if upcoming:
-        meetup = [{
-            "id": meetup["meetup_id"],
-            "topic": meetup["topic"],
-            "location": meetup["location"],
-            "location": meetup["location"],
-            "tags": meetup["tags"],
-            "happening_on": meetup["happening_on"],
-            "created_on": meetup["created_on"]
-        } for meetup in upcoming]
-        return jsonify({'Meetups': meetup}), 200
+        return jsonify({'Meetups': upcoming}), 200
     return jsonify({'message': 'No meetups available!'})
 
 @v2_meetups.route('<meetup_id>', methods=['GET'])
 def get_specific_meetup(meetup_id):
-    pass
+    meetup = Meetup.get_meetup_by_id(meetup_id)
+    if meetup:
+        return jsonify({'Meetup': meetup}), 200
+    return jsonify({'message': 'Meetup not found!'}), 404
