@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, request
 import json
 
 from app.api.v2.models.questionsmodel import Question
-from app.api.v2.views.auth import authentication
+from flask_jwt_extended import (jwt_required, get_jwt_identity)
 
 from app.api.v2.models.db import Database
 
@@ -14,7 +14,7 @@ db = Database()
 cur = db.cur
 
 @v2_questions.route('', methods=['POST'])
-@authentication
+@jwt_required
 def create_question(current_user):
     data = request.get_json()
     title= data['title']
