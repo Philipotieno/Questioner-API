@@ -55,21 +55,32 @@ class Database:
             self.cur.execute(q)
             self.conn.commit()
         print("All tables created successfully!")
-    # def insert_admin(self):
-        insert_admin = """INSERT INTO
-                users (firstname, lastname, username, phone_number,
-                email, password,
-                admin)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
-                RETURNING user_id, email, username, admin;"""
-        hashed_password = generate_password_hash("123432103")
-        data = ('superuser', 'superadmin', 'wiseadmin',
-                '0703454545', 'admin@gmail.com', hashed_password,
-                'TRUE')
-        self.cur.execute(insert_admin, data)
-        self.conn.commit()
-        print("Admin added successfully!")
-        self.cur.close() #close communication with the database
+        # def insert_admin(self):
+        try:
+            username = "wiseadmin"
+            query = """SELECT * FROM
+            users WHERE username = 'wiseadmin'"""
+            self.cur.execute(query)
+            admin = self.cur.fetchone()
+
+            if not admin:
+                insert_admin = """INSERT INTO
+                        users (firstname, lastname, username, phone_number,
+                        email, password,
+                        admin)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s)
+                        RETURNING user_id, email, username, admin;"""
+                hashed_password = generate_password_hash("123432103")
+                data = ('superuser', 'superadmin', 'wiseadmin',
+                        '0703454545', 'admin@gmail.com', hashed_password,
+                        'TRUE')
+
+                self.cur.execute(insert_admin, data)
+                self.conn.commit()
+                print("Admin added successfully!")
+                self.cur.close() #close communication with the database
+        except Exception as e:
+            print(str(e))
 
     def drop_tables(self):
         query = "DROP TABLE users, meetups, questions;"
