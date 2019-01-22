@@ -9,7 +9,8 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install coveralls
-
+before_script:
+  - psql -c "create database questioner; -U postgre
 script: 
   - python -m pytest --cov-report term-missing --cov=app
   - coveralls

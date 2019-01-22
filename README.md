@@ -6,10 +6,11 @@ Questioner is a platform that allows users to crowdsource questions for a meetup
 ## Features
 - Users can create an account.
 - Signed up users can log into their account.
-- Users can create a meetup record.
+- Admin can create a meetup record.
 - Users can get all upcoming meetup records.
 - Users can get a specific meeetup record.
 - Users can post a question to a specifc meetup
+- Users can comment on a question.
 - Users can upvote a question.
 - Users can downvote a question.
 - Users can RSVP a meetup.
@@ -21,16 +22,48 @@ Questioner is a platform that allows users to crowdsource questions for a meetup
 - [Pivotal Tracker](www.pivotaltracker.com) (A project management tool)
 - [Pytest](https://docs.pytest.org/en/latest/) (Tool for testing)
 
-## Getting started
-**You can view the app on heroku at [https://maswala.herokuapp.com/](https://maswala.herokuapp.com/) and test the end points on postman**
+## Setting up the application
+```
+ git https://github.com/Philipotieno/Questioner-API.git
+
+ cd Questioner-API
+
+ git checkout develop
+
+ pip install virtualenv
+
+ virtualenv -p python3 -name of virtualenv-
+
+ source ./bin/activate
+
+ pip install -r requirements.txt
+
+ touch .env
+ Add the following
+export FLASK_APP="run.py"
+export FLASK_ENV=development
+export SECRET_KEY="some random string"
+export APP_SETTINGS="development"
+
+export DB_URL="postgresql://localhost/questioner"
+export DB_HOST="localhost"
+export DB_NAME="database_name"
+export TEST_DB="testdb"
+export DB_USERNAME="user role"
+export DB_PASSWORD="password"
+
+source .env
+
+python run.py
 
 
+```
 ### Endpoints:
 --------------
 
 # Register user
 
-`POST /api/v1/users/register`
+`POST /api/v1/auth/users/register`
 
 Example request body:
 
@@ -45,32 +78,37 @@ Example request body:
 }
 ```
 
-No authentication required, returns a user
-
-Required fields: `firstname`, `lastname`, `username`, `phone`, `email`, `password`
+Required fields: `firstname`, `lastname`, `username`, `phone`, `email`, `password` Must be valid
 
 
 # Login user
 
-`POST /api/v1/users/login`
+`POST /api/v2/users/login`
 
 Example request body:
 
 ```source-json
 {
-    "email": "jake@jake.jake",
+    "username": "jakeake",
     "password": "jakejake"
 }
 ```
 
-No authentication required, returns a User
-
 Required fields: `email`, `password`
 
+# Log in admin
+`POST /api/v2/auth/login`
+Example request body:
 
+```source-json
+{
+    "username": "wiseadmin",
+    "password": "jakejake"
+}
+```
 # Create a meetup record
 
-`POST /api/v1/meetups`
+`POST /api/v2/meetups/<admin_id>`
 
 Example request body:
 
@@ -79,17 +117,17 @@ Example request body:
     "topic": "python meetup",
     "location": "loitoktok",
     "tags": "tagone, tag2 tagthree",
-    "happeningOn": "1/11/2019"
+    "happening_on": "1-11-2019"
 }
 ```
 
 No authentication required, returns a meetup
 
-Required fields: `topic`, `location`, `tags`, `happeningOn`
+Required fields: `topic`, `location`, `tags`, `happening_on`
 
 # Get all meetup records
 
-`GET /api/v1/meetups/upcoming`
+`GET /api/v2/meetups/upcoming`
 
 Example reSponse:
 
@@ -98,21 +136,21 @@ Example reSponse:
     "meetups": {
         "1": {
             "id": "1",
-            "happeningOn": "1/11/2019",
+            "happening-on": "1/11/2019",
             "location": "lolwe",
             "tags": "tagone, tag3",
             "topic": "Python"
         },
          "2": {
             "id": "2",
-            "happeningOn": "1/11/2019",
+            "happening_on": "1/11/2019",
             "location": "lolwe",
             "tags": "tagone, tag3",
             "topic": "Python"
         },
         "3": {
             "id": "3",
-            "happeningOn": "1/11/2019",
+            "happening_on": "1/11/2019",
             "location": "lolwe",
             "tags": "tagone, tag3",
             "topic": "Python"
@@ -125,7 +163,7 @@ No authentication required, returns a meetup
 
 # Get specific meetup records
 
-`GET /api/v1/meetups/<meetup_id>`
+`GET /api/v2/meetups/<meetup_id>`
 
 Example reSponse:
 
@@ -134,7 +172,7 @@ Example reSponse:
     "meetups": {
         "1": {
             "id": "1",
-            "happeningOn": "1/11/2019",
+            "happening_on": "1/11/2019",
             "location": "lolwe",
             "tags": "tagone, tag3",
             "topic": "Python"
@@ -214,35 +252,3 @@ Example request body:
 No authentication required
 
 Required fields: `attending`
-
-
-
-## Setting up the application
-```
- git https://github.com/Philipotieno/Questioner-API.git
-
- cd Questioner-API
-
- git checkout develop
-
- pip install virtualenv
-
- virtualenv -p python3 -name of virtualenv-
-
- source ./bin/activate
-
- pip install -r requirements.txt
-
- touch .env
- Add the following
- 	export FLASK_APP="run.py"
-	export FLASK_ENV=development
-	export SECRET="some random string
-
-source .env
-
-python run.py
-
-pytest
-
-```
