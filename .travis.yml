@@ -10,7 +10,8 @@ install:
   - pip install -r requirements.txt
   - pip install coveralls
 before_script:
-  - psql -c "create database questioner; -U postgre
+  - psql -c "CREATE ROLE mitch with createdb login password 'mufasa2019'" postgres
+  - psql -c "CREATE DATABASE questioner owner mitch" postgres
 script: 
   - python -m pytest --cov-report term-missing --cov=app
   - coveralls
