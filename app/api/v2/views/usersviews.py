@@ -3,6 +3,7 @@ import psycopg2
 from flask import Blueprint, jsonify, request, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
+import json
 
 #local imports
 from app.api.v2.models.usersmodels import User
@@ -20,72 +21,57 @@ v2_user = Blueprint('v2_users', __name__)
 
 @v2_user.route('/register', methods=['POST'])
 def registered_user():
-    data = request.get_json()
-    if validate_register(data):
-    	return validate_register(data)
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'message': 'Body should contaib json data!'}), 500
+        if validate_register(data):
+        	return validate_register(data)
 
-    query = "SELECT username from users;"
-    cur.execute(query)
-    usernames = cur.fetchall()
-    for name in usernames:
-        if name['username'] == data['username']:
-            return jsonify({'message': 'User already exists!'}), 409
-            
-    hashed_password = generate_password_hash(data['password'], method='sha256')
-    user_details = User(
-        data['firstname'],
-        data['lastname'],
-        data['username'],
-        data['phone_number'],
-        data['email'],
-        hashed_password
-    )
+        query = "SELECT username from users;"
+        cur.execute(query)
+        usernames = cur.fetchall()
+        for name in usernames:
+            if name['username'] == data['username']:
+                return jsonify({'message': 'User already exists!'}), 409
+                
+        hashed_password = generate_password_hash(data['password'], method='sha256')
+        user_details = User(
+            data['firstname'],
+            data['lastname'],
+            data['username'],
+            data['phone_number'],
+            data['email'],
+            hashed_password
+        )
 
-    if user_details.register_user():
-        return jsonify({'message': 'User Registered successfully!'}), 201
-    return jsonify({'message': 'User already exists!'}), 409
+        new_user = user_details.register_user()
+        return jsonify({'message': 'User Registered successfully!', "data" : new_user}), 201
 
-@v2_user.route('/users/<user_id>', methods=['PUT'])
-@jwt_required
-def add_admin(user_id):
-    data = request.get_json()
+    except Exception:
+        return jsonify({'message': "data field cannot be empty"}), 400
 
-    user = User.get_user_by_id(user_id)
-
-    if not data or not data["username"]:
-        return jsonify({'message': 'Username required!'}), 400
-
-    query = "SELECT username from users WHERE username=%s;"
-    cur.execute(query, (data['username'],))
-    user = cur.fetchone()
-
-    current_user = get_jwt_identity()
-    if current_user == 'superUser':
-        if user:
-            query = "UPDATE users SET admin='true' WHERE user_id=%s"
-            cur.execute(query, (user_id, ))
-            db.conn.commit()
-            return jsonify({'message': 'Admin added successfully'}), 200
-        return jsonify({'message': 'User does not exist!'}), 404
-    return jsonify({'message': 'You are not authorized to perform this function!'})
     
 @v2_user.route('/login', methods=['POST'])
 def login():
-    data = request.get_json()
+    try:
+        data = request.get_json()
+        if not data or not data["username"] or not data["password"]:
+            return jsonify({'message': 'Username and password required!'}), 400
 
-    if not data or not data["username"] or not data["password"]:
-        return jsonify({'message': 'Username and password required!'}), 400
+        query = "SELECT username, password from users WHERE username=%s;"
+        cur.execute(query, (data['username'],))
+        user = cur.fetchone()
 
-    query = "SELECT username, password from users WHERE username=%s;"
-    cur.execute(query, (data['username'],))
-    user = cur.fetchone()
+        if not user:
+            return jsonify({'message': 'Incorrect username'}), 401
 
-    if not user:
-        return jsonify({'message': 'Incorrect username'}), 401
+        if check_password_hash(user['password'], data["password"]):
+            access_token = create_access_token(identity=data['username'])
+            return jsonify({'message': 'You are now logged in', 
+                            'access_token': access_token}), 200
 
-    if check_password_hash(user['password'], data["password"]):
-        access_token = create_access_token(identity=data['username'])
-        return jsonify({'message': 'You are now logged in', 
-                        'access_token': access_token}), 200
+        return jsonify({'message': 'Incorrect password'}), 401
 
-    return jsonify({'message': 'Incorrect password'}), 401
+    except Exception:
+        return jsonify({'message': "data field cannot be empty"}), 400
