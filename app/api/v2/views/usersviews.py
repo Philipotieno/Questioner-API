@@ -1,9 +1,6 @@
-import os
-import psycopg2
 from flask import Blueprint, jsonify, request, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
-import json
 
 #local imports
 from app.api.v2.models.usersmodels import User
@@ -21,6 +18,7 @@ v2_user = Blueprint('v2_users', __name__)
 
 @v2_user.route('/register', methods=['POST'])
 def registered_user():
+    '''function to log in users'''
     try:
         data = request.get_json()
         if not data:
@@ -54,10 +52,11 @@ def registered_user():
     
 @v2_user.route('/login', methods=['POST'])
 def login():
+    '''View function to log in'''
     try:
         data = request.get_json()
         if not data or not data["username"] or not data["password"]:
-            return jsonify({'message': 'Username and password required!'}), 400
+            return jsonify({'message': 'Username or password field cannot be empty!'}), 400
 
         query = "SELECT username, password from users WHERE username=%s;"
         cur.execute(query, (data['username'],))
