@@ -39,10 +39,12 @@ class Question():
         db.conn.commit()
         return True
 
-    @staticmethod
-    def get_all_questions(self):
+    def get_all_questions():
         '''Method to fetch all questions'''
-        pass
+        query = "SELECT * from questions;"
+        cur.execute(query)
+        questions = cur.fetchall()
+        return questions
 
     @staticmethod
     def get_specific_question(self, question_id):

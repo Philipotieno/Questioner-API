@@ -44,7 +44,10 @@ def create_question():
 
 @v2_questions.route('', methods=['GET'])
 def view_all_question():
-	pass
+    asked = Question.get_all_questions()
+    if asked:
+        return jsonify({'Questions': asked}), 200
+    return jsonify({'message': 'No questions available!'})
 
 @v2_questions.route('', methods=['GET'])
 def fetch_specific_question():
