@@ -30,7 +30,7 @@ class Database:
                     lastname VARCHAR NOT NULL,
                     username VARCHAR UNIQUE NOT NULL,
                     phone_number INT NOT NULL,
-                    email VARCHAR NOT NULL UNIQUE,
+                    email VARCHAR NOT NULL,
                     password VARCHAR NOT NULL,
                     admin bool);'''
 
@@ -47,7 +47,7 @@ class Database:
                     user_id INTEGER REFERENCES users(user_id),
                     meetup_id INTEGER REFERENCES meetups(meetup_id),
                     title VARCHAR NOT NULL UNIQUE,
-                    body VARCHAR NOT NULL UNIQUE,
+                    body VARCHAR NOT NULL,
                     created_on TIMESTAMP);'''
 
         queries = [users, meetups, questions]

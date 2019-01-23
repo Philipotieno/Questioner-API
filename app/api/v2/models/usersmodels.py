@@ -27,7 +27,8 @@ class User(object):
     def register_user(self):
         if self.check_if_user_exists(self.username):
             return False
-        query = "INSERT INTO users (firstname, lastname, username, phone_number, email, password, admin) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+        query = "INSERT INTO users (firstname, lastname, username, phone_number, email, password, admin) VALUES (%s, %s, %s, %s, %s, %s, %s) \
+        RETURNING user_id, firstname, lastname, username, phone_number, email;"
         cur.execute(
             query,
             (self.firstname,
@@ -37,8 +38,9 @@ class User(object):
              self.email,
              self.password,
              self.admin))
+        user = cur.fetchone()
         db.conn.commit()
-        return True
+        return user
         
     @staticmethod
     def get_user_by_id(user_id):
