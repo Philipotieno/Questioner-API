@@ -12,6 +12,7 @@ cur = db.cur
 
 
 @v2_comments.route('', methods=['POST'])
+@jwt_required
 def post_comments():
     '''function to post comments'''
     try:
