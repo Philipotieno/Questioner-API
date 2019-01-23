@@ -39,3 +39,10 @@ class Comment():
         comment = cur.fetchone()
         db.conn.commit()
         return comment
+
+    def get_all_comments():
+        '''Method to fetch all comments'''
+        query = "SELECT * from comments;"
+        cur.execute(query)
+        comments = cur.fetchall()
+        return comments
