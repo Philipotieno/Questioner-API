@@ -46,7 +46,9 @@ class Question():
         questions = cur.fetchall()
         return questions
 
-    @staticmethod
-    def get_specific_question(self, question_id):
+    def get_specific_question(question_id):
         """ Fetch a specific question using given id"""
-        pass
+        query = "SELECT * from questions where question_id=%s;"
+        cur.execute(query, (question_id,))
+        question = cur.fetchone()
+        return question
