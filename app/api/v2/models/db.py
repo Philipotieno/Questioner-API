@@ -52,7 +52,7 @@ class Database:
         comments = '''CREATE TABLE IF NOT EXISTS comments(
                     comment_id serial PRIMARY KEY,
                     user_id INTEGER REFERENCES users(user_id),
-                    question_id INTEGER REFERENCES questions(question_id),
+                    question_id INTEGER REFERENCES meetups(meetup_id),
                     body VARCHAR NOT NULL,
                     created_on TIMESTAMP);'''
 
