@@ -44,20 +44,20 @@ def validate_questions(data):
 
 def validate_firstname(data):
     """Validate firstname"""
-    if not re.match(r'^[a-zA-Z]', data['firstname']):
-        msg = "Firstname should have letters and should be 3 or more characters long"
+    if not re.match(r'^[a-z]+$', data['firstname']):
+        msg = "Firstname should have letters and should be 3 or more characters long with no space"
         return jsonify({'message': msg}), 400
 
 def validate_lastname(data):
     """Validate firstname"""
-    if not re.match(r'^[a-zA-Z]', data['firstname']):
-        msg = "Lastname should have letters and should be 3 or more characters long"
+    if not re.match(r'^[a-z]+$', data['lastname']):
+        msg = "Lastname should have letters and should be 3 or more characters long with no space"
         return jsonify({'message': msg}), 400
 
 def validate_username(data):
     """Validate username"""
-    if not re.match(r'^[a-zA-Z0-9]{5,15}$', data['username']):
-        msg = "Username should have letters or numbers or a combination of both and should be 5 or more characters long"
+    if not re.match(r'^[a-z0-9]{5,15}$', data['username']):
+        msg = "Username should have letters or numbers or a combination of both and should be 5 or more characters long "
         return jsonify({'message': msg}), 400
 
 
@@ -75,8 +75,8 @@ def validate_phone(data):
 
 def validate_password(data):
     """Validate password"""
-    if not re.match(r'^[\w\W]{6,}$', data['password']):
-        msg = "Password must be at least 6 characters long"
+    if not re.match(r'[A-Za-z0-9@#$%^&+=]{8,}', data['password']):
+        msg = "Password must be at least 6 characters long e.g \'aA@12=wq\'"
         return jsonify({'message': msg}), 400
 
 def validate_topic(data):
