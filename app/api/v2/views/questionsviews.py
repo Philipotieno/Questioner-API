@@ -14,13 +14,10 @@ db = Database()
 cur = db.cur
 
 @v2_questions.route('', methods=['POST'])
-# @jwt_required
+@jwt_required
 def create_question():
+    """ Creates a question """
     data = request.get_json()
-    # title= data['title']
-    # body= data['body']
-    # user_id= data['user_id']
-    # meetup_id= data['meetup_id']
 
     current_user = get_jwt_identity()
     if not data or not data["title"] or not data["body"] or not data["user_id"] or not data["meetup_id"]:
