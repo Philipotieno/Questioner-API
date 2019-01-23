@@ -29,9 +29,18 @@ def validate_register(data):
         return validate_password(data)
 
 def validate_meetup(data):
-    #validate firstname
+    #validate topic
     if validate_topic(data):
         return validate_topic(data)
+
+def validate_questions(data):
+    #validate title
+    if validate_title(data):
+        return validate_title(data)
+
+    #validate title
+    if validate_body(data):
+        return validate_body(data)
 
 def validate_firstname(data):
     """Validate firstname"""
@@ -72,6 +81,18 @@ def validate_password(data):
 
 def validate_topic(data):
     """Validate topic"""
-    if not re.match(r'^[a-zA-Z0-9]{3,15}$', data['topic']):
-        msg = "Username should have letters or numbers or a combination of both and should be 5 or more characters long"
+    if not re.match(r'^[a-zA-Z0-9]{3,}$', data['topic']):
+        msg = "Topic should have letters or numbers or a combination of both and should be 3 or more characters long"
+        return jsonify({'message': msg}), 400
+
+def validate_title(data):
+    """Validate topic"""
+    if len(data['title']) < 10:
+        msg = "Length of the title should be 15 or more characters long"
+        return jsonify({'message': msg}), 400
+
+def validate_body(data):
+    """Validate topic"""
+    if len(data['body']) < 25 :
+        msg = "Length of the body should be 25 or more characters long"
         return jsonify({'message': msg}), 400
