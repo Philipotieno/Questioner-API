@@ -8,6 +8,7 @@ from app.api.v1.views.meetupviews import v1_meetups
 from app.api.v2.views.meetupviews import v2_meetups
 from app.api.v1.views.questionsviews import v1_questions
 from app.api.v2.views.questionsviews import v2_questions
+from app.api.v2.views.commentsview import v2_comments
 from flask_jwt_extended import (JWTManager)
 
 def create_app(env_name):
@@ -27,6 +28,7 @@ def create_app(env_name):
 	app.register_blueprint(v2_meetups, url_prefix='/api/v2/meetups')
 	app.register_blueprint(v1_questions, url_prefix='/api/v1/questions')
 	app.register_blueprint(v2_questions, url_prefix='/api/v2/questions')
+	app.register_blueprint(v2_comments, url_prefix='/api/v2/comments')
 
 	@app.route('/')
 	def index():
