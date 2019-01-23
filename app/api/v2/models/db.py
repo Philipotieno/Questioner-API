@@ -46,11 +46,23 @@ class Database:
                     question_id serial PRIMARY KEY,
                     user_id INTEGER REFERENCES users(user_id),
                     meetup_id INTEGER REFERENCES meetups(meetup_id),
-                    title VARCHAR NOT NULL UNIQUE,
                     body VARCHAR NOT NULL,
                     created_on TIMESTAMP);'''
 
-        queries = [users, meetups, questions]
+        comments = '''CREATE TABLE IF NOT EXISTS comments(
+                    comment_id serial PRIMARY KEY,
+                    user_id INTEGER REFERENCES users(user_id),
+                    question_id INTEGER REFERENCES questions(question_id),
+                    body VARCHAR NOT NULL,
+                    created_on TIMESTAMP);'''
+
+        rsvps = '''CREATE TABLE IF NOT EXISTS rsvps(
+                    rsvp_id serial PRIMARY KEY,
+                    user_id INTEGER REFERENCES users(user_id),
+                    response VARCHAR NOT NULL,
+                    created_on TIMESTAMP);'''
+
+        queries = [users, meetups, questions, comments, rsvps]
         for q in queries:
             self.cur.execute(q)
             self.conn.commit()
@@ -91,4 +103,3 @@ class Database:
 
 p = Database()
 p.create_tables()
-# p.insert_admin()
