@@ -18,28 +18,24 @@ cur = db.cur
 @jwt_required
 def create_question():
     """ Creates a question """
-    try:
-        data = request.get_json()
-        if validate_questions(data):
-            return validate_questions(data)
+    
+    data = request.get_json()
+    if validate_questions(data):
+        return validate_questions(data)
 
-        # current_user = get_jwt_identity()
-        if not data or not data["title"] or not data["body"] or not data["user_id"] or not data["meetup_id"]:
-                return jsonify({'message': 'All fields are required!'}), 400
-        
-        questions_data = Question(
-            data['title'],
-            data['body'],
-            data['user_id'],
-            data['meetup_id']
-        	)
-
-        if questions_data.ask_question():
-            return jsonify({'message': 'Question created!'}), 201
-        return jsonify({'message': 'Question with the title \'{}\' already exists'.format(data['title'])}), 409
-
-    except Exception:
-        return jsonify({'message': 'meetup_id or user_id not found!'}), 404
+    # current_user = get_jwt_identity()
+    if not data or not data["title"] or not data["body"] or not data["user_id"] or not data["meetup_id"]:
+            return jsonify({'message': 'All fields are required!'}), 400
+    
+    questions_data = Question(
+        data['title'],
+        data['body'],
+        data['user_id'],
+        data['meetup_id']
+    	)
+    if questions_data.ask_question():
+        return jsonify({'message': 'Question created!'}), 201
+    return jsonify({'message': 'Question with the title \'{}\' already exists'.format(data['title'])}), 409
     
 
 @v2_questions.route('', methods=['GET'])
@@ -49,9 +45,12 @@ def view_all_question():
         return jsonify({'Questions': asked}), 200
     return jsonify({'message': 'No questions available!'})
 
-@v2_questions.route('', methods=['GET'])
-def fetch_specific_question():
-	pass
+@v2_questions.route('<question_id>', methods=['GET'])
+def fetch_specific_question(question_id):
+    question = Question.get_specific_question(question_id)
+    if question:
+        return jsonify({'Meetup': question}), 200
+    return jsonify({'message': 'Question not found!'}), 404
 
 @v2_questions.route('', methods=['DELETE'])
 def delete_question():
