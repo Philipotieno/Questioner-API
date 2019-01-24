@@ -44,8 +44,8 @@ class Database:
 
         questions = '''CREATE TABLE IF NOT EXISTS questions(
                     question_id serial PRIMARY KEY,
-                    user_id INTEGER REFERENCES users(user_id),
-                    meetup_id INTEGER REFERENCES meetups(meetup_id),
+                    user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
+                    meetup_id INTEGER REFERENCES meetups(meetup_id)ON DELETE CASCADE,
                     title VARCHAR NOT NULL,
                     body VARCHAR NOT NULL,
                     votes INT DEFAULT 0,
@@ -53,15 +53,15 @@ class Database:
 
         comments = '''CREATE TABLE IF NOT EXISTS comments(
                     comment_id serial PRIMARY KEY,
-                    user_id INTEGER REFERENCES users(user_id),
-                    question_id INTEGER REFERENCES meetups(meetup_id),
+                    user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
+                    question_id INTEGER REFERENCES meetups(meetup_id)ON DELETE CASCADE,
                     body VARCHAR NOT NULL,
                     created_on TIMESTAMP);'''
 
         rsvps = '''CREATE TABLE IF NOT EXISTS rsvps(
                     rsvp_id serial PRIMARY KEY,
-                    user_id INTEGER REFERENCES users(user_id),
-                    meetup_id INTEGER REFERENCES meetups(meetup_id),
+                    user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
+                    meetup_id INTEGER REFERENCES meetups(meetup_id) ON DELETE CASCADE,
                     response VARCHAR NOT NULL,
                     created_on TIMESTAMP);'''
 
@@ -88,7 +88,7 @@ class Database:
                         VALUES (%s, %s, %s, %s, %s, %s, %s)
                         RETURNING user_id, email, username, admin;"""
                 hashed_password = generate_password_hash("123432103")
-                data = ('superuser', 'superadmin', 'wiseadmin',
+                data = ('superuser', 'superadmin', 'wiseadmin',
                         '0703454545', 'admin@gmail.com', hashed_password,
                         'TRUE')
 
