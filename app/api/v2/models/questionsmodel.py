@@ -84,3 +84,24 @@ class Question():
         }
 
         return result
+    @staticmethod
+    def downvote_question(question_id):
+        ''''Method to dowpvote a question'''
+        query = "SELECT * FROM questions WHERE question_id= '{}';".format(question_id)
+        cur.execute(query)
+        question = cur.fetchone()
+
+        current_vote = int(question['votes']) - 1
+        query = "UPDATE questions SET votes= '{}' WHERE question_id = '{}';".format(current_vote, question_id)
+        cur.execute(query)
+        db.conn.commit()
+
+        cur.execute("SELECT * FROM questions WHERE question_id= '{}';".format(question_id))
+        new_data = cur.fetchone()
+
+        result = {
+            "question_id" : new_data['question_id'],
+            "votes": new_data['votes']
+        }
+
+        return result
