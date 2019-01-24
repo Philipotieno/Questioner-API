@@ -105,7 +105,7 @@ def validate_title(data):
         return jsonify({'message': msg}), 400
 
 def validate_body(data):
-    """Validate topic"""
+    """Validate body"""
     if len(data['body']) < 25 :
         msg = "Length of the body should be 25 or more characters long"
         return jsonify({'message': msg}), 400
