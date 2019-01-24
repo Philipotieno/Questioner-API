@@ -53,3 +53,15 @@ def get_specific_meetup(meetup_id):
     if meetup:
         return jsonify({'Meetup': meetup}), 200
     return jsonify({'message': 'Meetup not found!'}), 404
+
+
+@v2_meetups.route('<meetup_id>', methods=['DELETE'])
+def remove_meetup(meetup_id):
+    """delete one meetup"""
+    meetup = Meetup.get_meetup_by_id(meetup_id)
+    if not meetup:
+        return (jsonify({'status': 404, 'message': "Meetup does not exist"}), 404)
+
+    Meetup.delete_meetup(meetup_id)
+
+    return (jsonify({"status": 200, "message": "meetup removed" }), 200)
