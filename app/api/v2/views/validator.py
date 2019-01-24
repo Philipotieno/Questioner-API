@@ -1,6 +1,7 @@
 """ function to perform validations"""
 import re
 from flask import jsonify
+import datetime
 
 
 def validate_register(data):
@@ -32,6 +33,18 @@ def validate_meetup(data):
     #validate topic
     if validate_topic(data):
         return validate_topic(data)
+
+    #validate date
+    if validate_date(data):
+        return validate_date(data)
+
+    #validate tags
+    if validate_tags(data):
+        return validate_tags(data)
+
+    #validate location
+    if validate_location(data):
+        return validate_location(data)
 
 def validate_questions(data):
     #validate title
@@ -92,7 +105,28 @@ def validate_title(data):
         return jsonify({'message': msg}), 400
 
 def validate_body(data):
-    """Validate topic"""
+    """Validate body"""
     if len(data['body']) < 25 :
         msg = "Length of the body should be 25 or more characters long"
+        return jsonify({'message': msg}), 400
+
+def validate_date(data):
+    """Validate topic"""
+    try:
+        if datetime.datetime.strptime(data['happening_on'], '%d-%m-%Y'):
+            pass
+    except ValueError as e:
+        return jsonify({'message' : str(e)}), 400
+
+def validate_tags(data):
+    """Validate tags"""
+    if not re.match(r'^[a-zA-Z0-9@#$%]{3,}$', data['tags']):
+        msg = "Tags should be 3 or more characters long"
+        return jsonify({'message': msg}), 400
+
+
+def validate_location(data):
+    """Validate location"""
+    if not re.match(r'^[a-z]{3,}$', data['location']):
+        msg = "location letters or numbers or a combination of both and should be 3 or more characters long"
         return jsonify({'message': msg}), 400

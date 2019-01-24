@@ -23,7 +23,7 @@ def create_app(env_name):
 
 	jwt = JWTManager(app)
 	
-	app.register_blueprint(v1_user, url_prefix='/api/v1/auth')
+	app.register_blueprint(v1_user, url_prefix='/api/v1/users')
 	app.register_blueprint(v2_user, url_prefix='/api/v2/auth')
 	app.register_blueprint(v1_meetups, url_prefix='/api/v1/meetups')
 	app.register_blueprint(v2_meetups, url_prefix='/api/v2/meetups')

@@ -17,6 +17,8 @@ class TestSetup(unittest.TestCase):
 
     def setUp(self):
         self.app = create_app("testing")
+        self.app_context = self.app.app_context()
+        self.app_context.push()
         self.client = self.app.test_client()
 
         self.user_1 = {
@@ -41,7 +43,7 @@ class TestSetup(unittest.TestCase):
             "topic" : "pytest",
             "location" : "kisumu",
             "tags" : "test tags",
-            "happeningOn" : "1-1-2019",
+            "happening_on" : "1-1-2019",
         }
 
       
@@ -49,30 +51,30 @@ class TestSetup(unittest.TestCase):
         self.meetup_1 = {
             "topic" : "testtopic",
             "location" : "testlocation",
-            "tags" : "tagfour tagfive",
-            "happeningOn" : "11-12-2019"
+            "tags" : "tagfour",
+            "happening_on" : "11-12-2019"
         }
 
         self.meetup_2 = {
             "topic" : "testtopics",
             "location" : "testlocations",
-            "tags" : "tagtwo tagone",
-            "happeningOn" : "11-12-2019"
+            "tags" : "tagtwo",
+            "happening_on" : "11-12-2019"
         }
         
         self.meetup_3 = {
-            "topic" : "tes",
+            "topic" : "testing",
             "location" : "testlocations",
-            "tags" : "tagtwo tagone",
-            "happeningOn" : "11-12-2019"
+            "tags" : "tagtwone",
+            "happening_on" : "11-12-2019"
         }
 
 
         self.question_1 = {
-            "user" : 1,
-            "meetup" : 2,
-            "title" : "testtitle",
-            "body" : "this is a test body"
+            "user_id" : 1,
+            "meetup_id" : 1,
+            "title" : "testtitle thidhdh",
+            "body" : "this is a test body should be good"
         }
 
         self.question_2 = {
@@ -84,8 +86,9 @@ class TestSetup(unittest.TestCase):
 
     def tearDown(self):
         user = "DELETE FROM users WHERE username='testuser';"
-        meetup = "DELETE FROM meetups WHERE topic='test_topic';"
-        queries = [user, meetup]
+        meetup = "DELETE FROM meetups WHERE topic='testing';"
+        question = "DELETE FROM questions WHERE title='testtitle thidhdh';"
+        queries = [user, meetup, question]
         for query in queries:
             cur.execute(query)
             db.conn.commit()
