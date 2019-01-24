@@ -16,6 +16,7 @@ class Question():
         self.body = body
         self.user_id = user_id
         self.meetup_id = meetup_id
+        self.votes = 0
         self.created_on = now
 
     def check_if_question_exists(self, title):
@@ -28,7 +29,8 @@ class Question():
     def ask_question(self):
         if self.check_if_question_exists(self.title):
             return False
-        query = "INSERT INTO questions (title, body, user_id, meetup_id, created_on) values (%s, %s, %s, %s, %s);"
+        query = "INSERT INTO questions (title, body, user_id, meetup_id, created_on) values (%s, %s, %s, %s, %s) \
+        RETURNING question_id, title, body, user_id, meetup_id, created_on;"
         cur.execute(
             query,
             (self.title,
@@ -36,9 +38,11 @@ class Question():
              self.user_id,
              self.meetup_id,
              self.created_on))
+        qns = cur.fetchone()
         db.conn.commit()
-        return True
+        return qns
 
+    @staticmethod
     def get_all_questions():
         '''Method to fetch all questions'''
         query = "SELECT * from questions;"
@@ -46,9 +50,37 @@ class Question():
         questions = cur.fetchall()
         return questions
 
+    @staticmethod
     def get_specific_question(question_id):
         """ Fetch a specific question using given id"""
         query = "SELECT * from questions where question_id=%s;"
         cur.execute(query, (question_id,))
         question = cur.fetchone()
         return question
+
+    @staticmethod
+    def upvote_question(question_id):
+        ''''Method to upvote a question'''
+        query = "SELECT * FROM questions WHERE question_id= '{}';".format(question_id)
+        cur.execute(query)
+        qns = cur.fetchone()
+
+        if qns:
+            question = qns
+        else:
+            return None
+
+        current_vote = int(question['votes']) + 1
+        query = "UPDATE questions SET votes= '{}' WHERE question_id = '{}';".format(current_vote, question_id)
+        cur.execute(query)
+        db.conn.commit()
+
+        cur.execute("SELECT * FROM questions WHERE question_id= '{}';".format(question_id))
+        new_data = cur.fetchone()
+
+        result = {
+            "question_id" : new_data['question_id'],
+            "votes": new_data['votes']
+        }
+
+        return result
