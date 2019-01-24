@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 
 from app.api.v2.models.rsvpmodel import Rsvp
+from app.api.v2.models.meetupsmodel import Meetup
 from flask_jwt_extended import (jwt_required, get_jwt_identity)
 
 from app.api.v2.models.db import Database
@@ -14,13 +15,21 @@ cur = db.cur
 # @jwt_required
 def post_rsvp(meetup_id):
     """Function to view rsvp """
+    meetup = Meetup.get_meetup_by_id(meetup_id)
+    if not meetup:
+        return jsonify({'message': 'Meetup not found!'}), 404
     try:
         data = request.get_json()
         if not data:
-            return jsonify({'message': 'No json data entered!'}), 401
+            return jsonify({'message': 'Body should contain data in json format!'}), 401
 
         if not data or not data["user_id"] or not data["meetup_id"] or not data["response"]:
-            return jsonify({'message': 'All fields are required!'}), 400
+            return jsonify({'message': 'User_id, meetup_id or response cannot be empty!'}), 400
+
+        r = data['response']
+        if (r != "maybe" and r != "yes" and r != "no"):
+            return jsonify({'error' : 'response must be yes no or maybe', "status":400}), 400
+
 
         query = "SELECT user_id, meetup_id FROM rsvps;"
         cur.execute(query)
@@ -39,5 +48,4 @@ def post_rsvp(meetup_id):
         return jsonify({'message': 'Rsvp posted successfully!', "data" : new_rsvp}), 201
 
     except Exception as e:
-        return jsonify({'message': str(e)}), 400
-    #     return jsonify({'message': 'Body cannot be empty enter valid data'}), 400
+        return jsonify({'message': 'All fields are required'}), 400
