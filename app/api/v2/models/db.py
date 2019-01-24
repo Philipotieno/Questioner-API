@@ -59,6 +59,7 @@ class Database:
         rsvps = '''CREATE TABLE IF NOT EXISTS rsvps(
                     rsvp_id serial PRIMARY KEY,
                     user_id INTEGER REFERENCES users(user_id),
+                    meetup_id INTEGER REFERENCES meetups(meetup_id),
                     response VARCHAR NOT NULL,
                     created_on TIMESTAMP);'''
 
@@ -95,7 +96,7 @@ class Database:
             print(str(e))
 
     def drop_tables(self):
-        query = "DROP TABLE users, meetups, questions;"
+        query = "DROP TABLE users, meetups, questions, comments, rsvps;"
         self.cur.execute(query)
         self.conn.commit()
         print("All tables dropped successfully!")
