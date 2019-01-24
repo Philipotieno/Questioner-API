@@ -2,7 +2,6 @@ from flask import Blueprint, jsonify, request
 
 from app.api.v2.models.rsvpmodel import Rsvp
 from app.api.v2.models.meetupsmodel import Meetup
-from app.api.v2.models.model import Meetup
 from flask_jwt_extended import (jwt_required, get_jwt_identity)
 
 from app.api.v2.models.db import Database

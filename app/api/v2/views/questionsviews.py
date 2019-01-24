@@ -52,6 +52,11 @@ def fetch_specific_question(question_id):
         return jsonify({'Meetup': question}), 200
     return jsonify({'message': 'Question not found!'}), 404
 
-@v2_questions.route('', methods=['DELETE'])
-def delete_question():
-	pass
+@v2_questions.route('<question_id>/upvote', methods=['PATCH'])
+def upvote_question(question_id):
+    question = Question.get_specific_question(question_id)
+    if not question:
+        return jsonify({'message': 'question does not exist!'}), 400
+
+    result = Question.upvote_question(question["question_id"])
+    return jsonify({'message': 'Question upvoted succesfully!', "data": result}), 400

@@ -46,7 +46,9 @@ class Database:
                     question_id serial PRIMARY KEY,
                     user_id INTEGER REFERENCES users(user_id),
                     meetup_id INTEGER REFERENCES meetups(meetup_id),
+                    title VARCHAR NOT NULL,
                     body VARCHAR NOT NULL,
+                    votes INT DEFAULT 0,
                     created_on TIMESTAMP);'''
 
         comments = '''CREATE TABLE IF NOT EXISTS comments(
@@ -62,6 +64,8 @@ class Database:
                     meetup_id INTEGER REFERENCES meetups(meetup_id),
                     response VARCHAR NOT NULL,
                     created_on TIMESTAMP);'''
+
+
 
         queries = [users, meetups, questions, comments, rsvps]
         for q in queries:
@@ -84,7 +88,7 @@ class Database:
                         VALUES (%s, %s, %s, %s, %s, %s, %s)
                         RETURNING user_id, email, username, admin;"""
                 hashed_password = generate_password_hash("123432103")
-                data = ('superuser', 'superadmin', 'wiseadmin',
+                data = ('superuser', 'superadmin', 'wiseadmin',
                         '0703454545', 'admin@gmail.com', hashed_password,
                         'TRUE')
 
