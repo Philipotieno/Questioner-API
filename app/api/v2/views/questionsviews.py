@@ -60,6 +60,7 @@ def fetch_specific_question(question_id):
     return jsonify({'message': 'Question not found!'}), 404
 
 @v2_questions.route('<question_id>/upvote', methods=['PATCH'])
+@jwt_required
 def upvote_question(question_id):
     """Upvote a question"""
     question = Question.get_specific_question(question_id)
@@ -71,6 +72,7 @@ def upvote_question(question_id):
 
 
 @v2_questions.route('<question_id>/downvote', methods=['PATCH'])
+@jwt_required
 def downvote_question(question_id):
     """Downvote a question"""
     question = Question.get_specific_question(question_id)
