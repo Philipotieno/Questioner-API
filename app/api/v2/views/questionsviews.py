@@ -56,7 +56,17 @@ def fetch_specific_question(question_id):
 def upvote_question(question_id):
     question = Question.get_specific_question(question_id)
     if not question:
-        return jsonify({'message': 'question does not exist!'}), 400
+        return jsonify({"status":404, 'message': 'question does not exist!'}), 404
 
     result = Question.upvote_question(question["question_id"])
-    return jsonify({'message': 'Question upvoted succesfully!', "data": result}), 400
+    return jsonify({"status":404, 'message': 'Question upvoted succesfully!', "data": result}), 400
+
+
+@v2_questions.route('<question_id>/downvote', methods=['PATCH'])
+def downvote_question(question_id):
+    question = Question.get_specific_question(question_id)
+    if not question:
+        return jsonify({"status":404, 'message': 'question does not exist!'}), 404
+
+    result = Question.downvote_question(question["question_id"])
+    return jsonify({"status":400, 'message': 'Question upvoted succesfully!', "data": result}), 400
