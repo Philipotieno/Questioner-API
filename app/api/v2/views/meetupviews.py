@@ -14,12 +14,10 @@ from app.api.v2.models.db import Database
 v2_meetups = Blueprint('v2_meetups', __name__)
 
 
-@v2_meetups.route('<user_id>', methods=['POST'])
+@v2_meetups.route('', methods=['POST'])
 @jwt_required
-def create_meetup(user_id):
-    user = User.get_user_by_id(user_id)
+def create_meetup():
     current_user = get_jwt_identity()
-
     if current_user == 'wiseadmin':
         data = request.get_json()
         if validate_meetup(data):
