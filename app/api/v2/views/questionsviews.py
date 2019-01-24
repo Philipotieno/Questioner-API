@@ -39,9 +39,9 @@ def create_question():
                 return jsonify({'status':201, 'message': 'Question created!', 'data':new_qns}), 201
             return jsonify({'message': 'Question with the title \'{}\' already exists'.format(data['title'])}), 409
         except Exception:
-            return jsonify({'status':400, 'message': 'user_id or meetup_id does not exist'}), 201
+            return jsonify({'status':400, 'message': 'user_id or meetup_id does not exist'}), 400
     except Exception as e:
-        return jsonify({'status':400, 'message': 'Please input all data in json format'}), 201
+        return jsonify({'status':400, 'message': 'Please input all data in json format'}), 400
 
 @v2_questions.route('', methods=['GET'])
 def view_all_question():
