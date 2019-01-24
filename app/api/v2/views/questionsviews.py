@@ -45,6 +45,7 @@ def create_question():
 
 @v2_questions.route('', methods=['GET'])
 def view_all_question():
+    """View all questions"""
     asked = Question.get_all_questions()
     if asked:
         return jsonify({'Questions': asked}), 200
@@ -52,6 +53,7 @@ def view_all_question():
 
 @v2_questions.route('<question_id>', methods=['GET'])
 def fetch_specific_question(question_id):
+    """Fetch specific question"""
     question = Question.get_specific_question(question_id)
     if question:
         return jsonify({'Meetup': question}), 200
@@ -59,6 +61,7 @@ def fetch_specific_question(question_id):
 
 @v2_questions.route('<question_id>/upvote', methods=['PATCH'])
 def upvote_question(question_id):
+    """Upvote a question"""
     question = Question.get_specific_question(question_id)
     if not question:
         return jsonify({"status":404, 'message': 'question does not exist!'}), 404
@@ -69,6 +72,7 @@ def upvote_question(question_id):
 
 @v2_questions.route('<question_id>/downvote', methods=['PATCH'])
 def downvote_question(question_id):
+    """Downvote a question"""
     question = Question.get_specific_question(question_id)
     if not question:
         return jsonify({"status":404, 'message': 'question does not exist!'}), 404
