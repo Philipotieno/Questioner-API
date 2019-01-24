@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 
 from app.api.v2.models.rsvpmodel import Rsvp
 from app.api.v2.models.meetupsmodel import Meetup
+from app.api.v2.models.model import Meetup
 from flask_jwt_extended import (jwt_required, get_jwt_identity)
 
 from app.api.v2.models.db import Database
@@ -12,7 +13,7 @@ db = Database()
 cur = db.cur
 
 @v2_rsvps.route('', methods=['POST'])
-# @jwt_required
+@jwt_required
 def post_rsvp(meetup_id):
     """Function to view rsvp """
     meetup = Meetup.get_meetup_by_id(meetup_id)
