@@ -25,7 +25,8 @@ class Meetup():
     def create_meetup(self):
         if self.check_if_meetup_exists(self.topic):
             return False
-        query = "INSERT INTO meetups (topic, location, tags, happening_on, created_on) values (%s, %s, %s, %s, %s);"
+        query = "INSERT INTO meetups (topic, location, tags, happening_on, created_on) values (%s, %s, %s, %s, %s) \
+        RETURNING meetup_id, topic, location, tags, happening_on, created_on;"
         cur.execute(
             query,
             (self.topic,
@@ -33,10 +34,17 @@ class Meetup():
              self.tags,
              self.happening_on,
              self.created_on))
+        meetup = cur.fetchone()
         db.conn.commit()
-        return True
+        return meetup
 
-    staticmethod
+    def delete_meetup(meetup_id):
+        """Delete a single Meetup"""
+        query = "DELETE FROM meetups WHERE meetup_id= '{}';".format(meetup_id)
+        cur.execute(query)
+        db.conn.commit()
+
+    @staticmethod
     def get_all_meetups():
         '''Method to fetch all meetups'''
         query = "SELECT * from meetups;"
@@ -51,3 +59,4 @@ class Meetup():
         cur.execute(query, (meetup_id,))
         meetup = cur.fetchone()
         return meetup
+
