@@ -18,6 +18,7 @@ v2_meetups = Blueprint('v2_meetups', __name__)
 @jwt_required
 def create_meetup():
     current_user = get_jwt_identity()
+
     if current_user == 'wiseadmin':
         data = request.get_json()
         if validate_meetup(data):
@@ -32,10 +33,11 @@ def create_meetup():
             data['tags'],
             data['happening_on']
             )
-        if meetup_details.create_meetup():
-            return jsonify({'message': 'Meetup created!'}), 201
-        return jsonify({'message': 'Topic {} already exists choose another topic'.format(data['topic'])}), 409
-    return jsonify({'message': 'You are not allowed to make changes'}), 409
+        new_meetup =meetup_details.create_meetup()
+        if new_meetup:
+            return jsonify({'status': 201,'message': 'Meetup created!', "Meetup":new_meetup}), 201
+        return jsonify({'status': 409,'message': 'Topic {} already exists choose another topic'.format(data['topic'])}), 409
+    return jsonify({'status': 409,'message': 'You are not allowed to make changes'}), 409
 
 
 @v2_meetups.route('/upcoming', methods=['GET'])
