@@ -18,27 +18,28 @@ v2_meetups = Blueprint('v2_meetups', __name__)
 @jwt_required
 def create_meetup():
     current_user = get_jwt_identity()
+    try:
+        if current_user == 'wiseadmin':
+            data = request.get_json()
+            if validate_meetup(data):
+                return validate_meetup(data)
 
-    if current_user == 'wiseadmin':
-        data = request.get_json()
-        if validate_meetup(data):
-            return validate_meetup(data)
+            if not data or not data["topic"] or not data["location"] or not data["happening_on"] or not data["tags"]:
+                return jsonify({'message': 'All fields are required!'}), 400
 
-        if not data or not data["topic"] or not data["location"] or not data["happening_on"] or not data["tags"]:
-            return jsonify({'message': 'All fields are required!'}), 400
-
-        meetup_details = Meetup(
-            data['topic'],
-            data['location'],
-            data['tags'],
-            data['happening_on']
-            )
-        new_meetup =meetup_details.create_meetup()
-        if new_meetup:
-            return jsonify({'status': 201,'message': 'Meetup created!', "Meetup":new_meetup}), 201
-        return jsonify({'status': 409,'message': 'Topic {} already exists choose another topic'.format(data['topic'])}), 409
-    return jsonify({'status': 409,'message': 'You are not allowed to make changes'}), 409
-
+            meetup_details = Meetup(
+                data['topic'],
+                data['location'],
+                data['tags'],
+                data['happening_on']
+                )
+            new_meetup =meetup_details.create_meetup()
+            if new_meetup:
+                return jsonify({'status': 201,'message': 'Meetup created!', "Meetup":new_meetup}), 201
+            return jsonify({'status': 409,'message': 'Topic {} already exists choose another topic'.format(data['topic'])}), 409
+        return jsonify({'status': 409,'message': 'You are not allowed to make changes'}), 409
+    except Exception as e:
+        return jsonify({'message': "something went wrong", "Error":str(e)}), 400
 
 @v2_meetups.route('/upcoming', methods=['GET'])
 def get_meetups():
