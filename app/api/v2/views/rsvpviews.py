@@ -45,7 +45,7 @@ def post_rsvp(meetup_id):
         )
 
         new_rsvp = rsvp_details.post_rsvp()
-        return jsonify({'message': 'Rsvp posted successfully!', "data" : new_rsvp}), 201
+        return jsonify({'status':200, 'message': 'Rsvp posted successfully!', "data" : new_rsvp}), 201
 
     except Exception as e:
         return jsonify({'message': 'All fields are required'}), 400
