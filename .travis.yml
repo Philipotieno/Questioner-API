@@ -14,8 +14,7 @@ before_script:
   - psql -c "CREATE DATABASE questioner owner mitch" postgres
 script: 
   - python -m pytest --cov-report term-missing --cov=app
-  - coveralls
-  - pytest
+
 branches:
   - develop
 
