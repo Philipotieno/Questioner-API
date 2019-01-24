@@ -47,7 +47,7 @@ def registered_user():
         return jsonify({'message': 'User Registered successfully!', "data" : new_user}), 201
 
     except Exception:
-        return jsonify({'message': "data field cannot be empty"}), 400
+        return jsonify({'status':400, 'message': "data field cannot be empty"}), 400
 
     
 @v2_user.route('/login', methods=['POST'])
