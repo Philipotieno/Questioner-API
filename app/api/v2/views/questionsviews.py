@@ -68,7 +68,7 @@ def upvote_question(question_id):
         return jsonify({"status":404, 'message': 'question does not exist!'}), 404
 
     result = Question.upvote_question(question["question_id"])
-    return jsonify({"status":404, 'message': 'Question upvoted succesfully!', "data": result}), 400
+    return jsonify({"status":400, 'message': 'Question upvoted succesfully!', "data": result}), 400
 
 
 @v2_questions.route('<question_id>/downvote', methods=['PATCH'])

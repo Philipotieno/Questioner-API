@@ -67,7 +67,7 @@ def login():
 
         if check_password_hash(user['password'], data["password"]):
             access_token = create_access_token(identity=data['username'])
-            return jsonify({'message': 'You are now logged in', 
+            return jsonify({'status':200, 'message': 'You are now logged in', 
                             'access_token': access_token}), 200
 
         return jsonify({'message': 'Incorrect password'}), 401
