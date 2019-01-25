@@ -13,7 +13,7 @@ before_script:
   - psql -c "CREATE ROLE mitch with createdb login password 'mufasa2019'" postgres
   - psql -c "CREATE DATABASE questioner owner mitch" postgres
 script: 
-  - python --cov app/tests
+  - python --cov=app
 
 branches:
   - develop
