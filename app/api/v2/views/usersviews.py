@@ -44,7 +44,7 @@ def registered_user():
         )
 
         new_user = user_details.register_user()
-        return jsonify({'message': 'User Registered successfully!', "data" : new_user}), 201
+        return jsonify({'status':201,'message': 'User Registered successfully!', "data" : new_user}), 201
 
     except Exception:
         return jsonify({'status':400, 'message': "data field cannot be empty"}), 400
