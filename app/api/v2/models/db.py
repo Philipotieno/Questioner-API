@@ -17,6 +17,7 @@ class Database:
                 dbname=self.name,
                 user=self.user,
                 password=self.password)
+            self.cur = self.conn.cursor(cursor_factory=RealDictCursor)
             print("successfully connected")
         except:
             print("Unable to connect to the database")
@@ -68,7 +69,6 @@ class Database:
 
         queries = [users, meetups, questions, comments, rsvps]
         for q in queries:
-            self.cur = self.conn.cursor(cursor_factory=RealDictCursor)
             self.cur.execute(q)
             self.conn.commit()
         print("All tables created successfully!")
