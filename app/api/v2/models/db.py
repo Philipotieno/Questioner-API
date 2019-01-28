@@ -105,6 +105,3 @@ class Database:
         self.conn.commit()
         print("All tables dropped successfully!")
         self.cur.close()
-
-p = Database()
-p.create_tables()
