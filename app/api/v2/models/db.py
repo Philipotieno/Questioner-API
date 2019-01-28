@@ -95,9 +95,9 @@ class Database:
                 self.cur.execute(insert_admin, data)
                 self.conn.commit()
                 print("Admin added successfully!")
-                self.cur.close() #close communication with the database
         except Exception as e:
             print(str(e))
+            self.cur.close() #close communication with the database
 
     def drop_tables(self):
         query = "DROP TABLE users, meetups, questions, comments, rsvps;"
