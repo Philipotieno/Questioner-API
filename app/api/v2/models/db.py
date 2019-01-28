@@ -68,7 +68,6 @@ class Database:
 
 
         queries = [users, meetups, questions, comments, rsvps]
-        self.cur = self.conn.cursor(cursor_factory=RealDictCursor)
         for q in queries:
             self.cur.execute(q)
             self.conn.commit()
