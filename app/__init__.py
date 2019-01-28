@@ -36,4 +36,16 @@ def create_app(env_name):
 	def index():
 		return jsonify({"Message" : "welcome to questioner"})
 
+	@app.errorhandler(400)
+	def bad_request(error):
+		return jsonify({'message': 'Please input all required fields!'}), 400
+
+	@app.errorhandler(404)
+	def not_found(error):
+		return jsonify({'message': 'The requested URL was not found, please check your spelling and try again'}), 404
+
+	@app.errorhandler(405)
+	def not_allowed(error):
+		return jsonify({'message': 'Method not allowed!'}), 405
+
 	return app
