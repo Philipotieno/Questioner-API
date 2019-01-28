@@ -36,4 +36,8 @@ def create_app(env_name):
 	def index():
 		return jsonify({"Message" : "welcome to questioner"})
 
+	@app.errorhandler(400)
+	def bad_request(error):
+		return jsonify({'message': 'Please input all required fields!'}), 400
+	
 	return app
