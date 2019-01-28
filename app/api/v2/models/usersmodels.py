@@ -1,5 +1,6 @@
 import os
 from app.api.v2.models.db import Database
+import psycopg2
 
 db = Database()
 cur = db.cur
