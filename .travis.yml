@@ -15,7 +15,7 @@ before_script:
   - psql -c "CREATE ROLE mitch with createdb login password 'mufasa2019'" postgres
   - psql -c "CREATE DATABASE questioner owner mitch" postgres
 script: 
-  - pytest --with-coverage --cover-package=app
+  - python -m pytest --cov-report term-missing ]--cov=app
   - coveralls
 branches:
   - develop
