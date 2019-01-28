@@ -39,5 +39,9 @@ def create_app(env_name):
 	@app.errorhandler(400)
 	def bad_request(error):
 		return jsonify({'message': 'Please input all required fields!'}), 400
-	
+
+	@app.errorhandler(404)
+	def not_found(error):
+		return jsonify({'message': 'The requested URL was not found, please check your spelling and try again'}), 404
+
 	return app
