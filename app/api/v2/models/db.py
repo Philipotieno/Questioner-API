@@ -25,7 +25,7 @@ class Database:
     def create_tables(self):
         """ Method to create tables """
         users = '''CREATE TABLE IF NOT EXISTS users(
-                    user_id serial PRIMARY KEY,
+                    user_id SERIAL PRIMARY KEY,
                     firstname VARCHAR NOT NULL,
                     lastname VARCHAR NOT NULL,
                     username VARCHAR UNIQUE NOT NULL,
@@ -35,7 +35,7 @@ class Database:
                     admin bool);'''
 
         meetups = '''CREATE TABLE IF NOT EXISTS meetups(
-                    meetup_id serial PRIMARY KEY,
+                    meetup_id SERIAL PRIMARY KEY,
                     topic VARCHAR NOT NULL,
                     location VARCHAR NOT NULL,
                     tags VARCHAR NOT NULL,
@@ -43,7 +43,7 @@ class Database:
                     created_on TIMESTAMP);'''
 
         questions = '''CREATE TABLE IF NOT EXISTS questions(
-                    question_id serial PRIMARY KEY,
+                    question_id SERIAL PRIMARY KEY,
                     user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
                     meetup_id INTEGER REFERENCES meetups(meetup_id)ON DELETE CASCADE,
                     title VARCHAR NOT NULL,
@@ -52,14 +52,14 @@ class Database:
                     created_on TIMESTAMP);'''
 
         comments = '''CREATE TABLE IF NOT EXISTS comments(
-                    comment_id serial PRIMARY KEY,
+                    comment_id SERIAL PRIMARY KEY,
                     user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
                     question_id INTEGER REFERENCES meetups(meetup_id)ON DELETE CASCADE,
                     body VARCHAR NOT NULL,
                     created_on TIMESTAMP);'''
 
         rsvps = '''CREATE TABLE IF NOT EXISTS rsvps(
-                    rsvp_id serial PRIMARY KEY,
+                    rsvp_id SERIAL PRIMARY KEY,
                     user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
                     meetup_id INTEGER REFERENCES meetups(meetup_id) ON DELETE CASCADE,
                     response VARCHAR NOT NULL,
