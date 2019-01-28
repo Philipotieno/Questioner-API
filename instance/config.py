@@ -14,7 +14,7 @@ class TestingConfig(Config):
     """Testing configuration"""
     DEBUG = True
     TESTING = True
-    DB_NAME = "testdb"
+    TEST_DB = "mytestdb"
     APP_SETTINGS = "testing"
 
 
