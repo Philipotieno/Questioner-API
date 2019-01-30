@@ -87,7 +87,7 @@ class Database:
                         admin)
                         VALUES (%s, %s, %s, %s, %s, %s, %s)
                         RETURNING user_id, email, username, admin;"""
-                hashed_password = generate_password_hash("123432103")
+                hashed_password = generate_password_hash("1qQ@1234")
                 data = ('superuser', 'superadmin', 'wiseadmin',
                         '0703454545', 'admin@gmail.com', hashed_password,
                         'TRUE')
