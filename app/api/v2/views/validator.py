@@ -25,13 +25,9 @@ def validate_register(data):
     if validate_email(data):
         return validate_email(data)
 
-    # validate password lenth
+    # validate password
     if validate_password(data):
         return validate_password(data)
-
-    # validate password
-    if validate_password2(data):
-        return validate_password2(data)
 
 def validate_meetup(data):
     #validate topic
@@ -85,20 +81,32 @@ def validate_email(data):
         return jsonify({'message': msg}), 400
 
 def validate_phone(data):
-    """Validate phone_nu,ber"""
+    """Validate phone_number"""
     if not re.match(r'^[07]\d{9}$', data['phone_number']):
         msg = "Please input a valid phone number of the format 0703473377!"
         return jsonify({'message': msg}), 400
 
 def validate_password(data):
     """Validate password"""
-    if  len(data['password'].strip()) < 8:
-        msg = "Password must be at least 8 characters long"
+    pswd = data['password']
+    if len(pswd) < 8:
+        msg = "Password should be at least 8 characters"
         return jsonify({'message': msg}), 400
 
-def validate_password2(data):
-    if not re.match(r'[A-Za-z0-9@#$%^&+=]$', data['password']):
-        msg = "Password must have at least an uppercase, lowercase numbers and any of @#$%^&+="
+    if re.search('[0-9]',pswd) is None:
+        msg = "Make sure your password has a number in it"
+        return jsonify({'message': msg}), 400
+
+    if re.search('[a-z]',pswd) is None:
+        msg = "Make sure your password has a lowercase letter in it"
+        return jsonify({'message': msg}), 400
+
+    if re.search('[A-Z]',pswd) is None:
+        msg = "Make sure your password has an uppercase letter in it"
+        return jsonify({'message': msg}), 400
+
+    if re.search('[@#$%^&+=]',pswd) is None:
+        msg = "Make sure your password has one special character @#$%^&+="
         return jsonify({'message': msg}), 400
 
 def validate_topic(data):
@@ -139,3 +147,11 @@ def validate_location(data):
     if not re.match(r'^[a-z]{3,}$', data['location']):
         msg = "location letters or numbers or a combination of both and should be 3 or more characters long"
         return jsonify({'message': msg}), 400
+
+
+
+
+    #     def validate_password(data):
+    # """Validate password"""
+    # if  len(data['password'].strip()) < 8:
+    #     msg = "Password must be at least 8 characters long"
