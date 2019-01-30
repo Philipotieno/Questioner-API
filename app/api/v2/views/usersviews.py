@@ -42,7 +42,8 @@ def registered_user():
     )
 
     new_user = user_details.register_user()
-    return jsonify({'status':201,'message': 'User Registered successfully!', "data" : new_user}), 201
+    access_token = create_access_token(identity=data['username'])
+    return jsonify({'status':201,'message': 'User Registered successfully!', "data" : new_user, 'access_token': access_token}), 201
     
 @v2_user.route('/login', methods=['POST'])
 def login():
