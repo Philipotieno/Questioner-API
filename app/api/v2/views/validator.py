@@ -3,6 +3,8 @@ import re
 from flask import jsonify
 import datetime
 
+now = datetime.datetime.now()
+
 
 def validate_register(data):
     # validate firstname
@@ -37,10 +39,6 @@ def validate_meetup(data):
     #validate date
     if validate_date(data):
         return validate_date(data)
-
-    #validate tags
-    if validate_tags(data):
-        return validate_tags(data)
 
     #validate location
     if validate_location(data):
@@ -132,26 +130,16 @@ def validate_date(data):
     try:
         if datetime.datetime.strptime(data['happening_on'], '%d-%m-%Y'):
             pass
-    except ValueError as e:
-        return jsonify({'message' : str(e)}), 400
-
-def validate_tags(data):
-    """Validate tags"""
-    if not re.match(r'^[a-zA-Z0-9@#$%]{3,}$', data['tags']):
-        msg = "Tags should be 3 or more characters long"
+    except:
+        msg = "Date should be in the format %DD-%MM-%YYYY"
         return jsonify({'message': msg}), 400
 
+    if datetime.datetime.strptime(data['happening_on'], '%d-%m-%Y') < now:
+        msg = "Date cannot be earlier than today"
+        return jsonify({'message': msg}), 400
 
 def validate_location(data):
     """Validate location"""
     if not re.match(r'^[a-z]{3,}$', data['location']):
         msg = "location letters or numbers or a combination of both and should be 3 or more characters long"
         return jsonify({'message': msg}), 400
-
-
-
-
-    #     def validate_password(data):
-    # """Validate password"""
-    # if  len(data['password'].strip()) < 8:
-    #     msg = "Password must be at least 8 characters long"
