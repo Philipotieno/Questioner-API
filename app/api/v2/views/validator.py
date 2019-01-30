@@ -25,9 +25,13 @@ def validate_register(data):
     if validate_email(data):
         return validate_email(data)
 
-    # validate password
+    # validate password lenth
     if validate_password(data):
         return validate_password(data)
+
+    # validate password
+    if validate_password2(data):
+        return validate_password2(data)
 
 def validate_meetup(data):
     #validate topic
@@ -88,8 +92,13 @@ def validate_phone(data):
 
 def validate_password(data):
     """Validate password"""
-    if not re.match(r'[A-Za-z0-9@#$%^&+=]{8,}', data['password']):
-        msg = "Password must be at least 6 characters long e.g \'aA@12=wq\'"
+    if  len(data['password'].strip()) < 8:
+        msg = "Password must be at least 8 characters long"
+        return jsonify({'message': msg}), 400
+
+def validate_password2(data):
+    if not re.match(r'[A-Za-z0-9@#$%^&+=]$', data['password']):
+        msg = "Password must have at least an uppercase, lowercase numbers and any of @#$%^&+="
         return jsonify({'message': msg}), 400
 
 def validate_topic(data):
