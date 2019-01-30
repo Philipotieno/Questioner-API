@@ -31,18 +31,6 @@ def validate_register(data):
     if validate_password(data):
         return validate_password(data)
 
-def validate_meetup(data):
-    #validate topic
-    if validate_topic(data):
-        return validate_topic(data)
-
-    #validate date
-    if validate_date(data):
-        return validate_date(data)
-
-    #validate location
-    if validate_location(data):
-        return validate_location(data)
 
 def validate_questions(data):
     #validate title
@@ -107,23 +95,6 @@ def validate_password(data):
         msg = "Make sure your password has one special character @#$%^&+="
         return jsonify({'message': msg}), 400
 
-def validate_topic(data):
-    """Validate topic"""
-    if not re.match(r'^[a-zA-Z0-9]{3,}$', data['topic']):
-        msg = "Topic should have letters or numbers or a combination of both and should be 3 or more characters long"
-        return jsonify({'message': msg}), 400
-
-def validate_title(data):
-    """Validate topic"""
-    if len(data['title']) < 10:
-        msg = "Length of the title should be 15 or more characters long"
-        return jsonify({'message': msg}), 400
-
-def validate_body(data):
-    """Validate body"""
-    if len(data['body']) < 25 :
-        msg = "Length of the body should be 25 or more characters long"
-        return jsonify({'message': msg}), 400
 
 def validate_date(data):
     """Validate topic"""
