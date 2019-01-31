@@ -1,4 +1,3 @@
-import psycopg2
 from flask import Blueprint, jsonify, request
 import datetime
 
@@ -6,7 +5,6 @@ from app.api.v2.models.meetupsmodel import Meetup
 from app.api.v2.models.usersmodels import User
 
 
-from app.api.v2.views.validator import validate_meetup
 from flask_jwt_extended import (jwt_required, get_jwt_identity)
 
 from app.api.v2.models.db import Database
@@ -20,8 +18,6 @@ def create_meetup():
     current_user = get_jwt_identity()
     if current_user == 'wiseadmin':
         data = request.get_json()
-        if validate_meetup(data):
-            return validate_meetup(data)
 
         if not data or not data["topic"] or not data["location"] or not data["happening_on"] or not data["tags"]:
             return jsonify({'message': 'All fields are required!'}), 400
