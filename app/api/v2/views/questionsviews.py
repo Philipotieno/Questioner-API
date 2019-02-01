@@ -15,7 +15,7 @@ v2_questions = Blueprint('v2_uestions', __name__)
 db = Database()
 cur = db.cur
 
-@v2_questions.route('<meetup_id>', methods=['POST'])
+@v2_questions.route('<int:meetup_id>', methods=['POST'])
 @jwt_required
 def create_question(meetup_id):
     """ Creates a question """
@@ -59,7 +59,7 @@ def fetch_specific_question(question_id):
         return jsonify({'Meetup': question}), 200
     return jsonify({'message': 'Question not found!'}), 404
 
-@v2_questions.route('<question_id>/upvote', methods=['PATCH'])
+@v2_questions.route('<int:question_id>/upvote', methods=['PATCH'])
 @jwt_required
 def upvote_question(question_id):
     """Upvote a question"""
@@ -71,7 +71,7 @@ def upvote_question(question_id):
     return jsonify({"status":400, 'message': 'Question upvoted succesfully!', "data": result}), 400
 
 
-@v2_questions.route('<question_id>/downvote', methods=['PATCH'])
+@v2_questions.route('<int:question_id>/downvote', methods=['PATCH'])
 @jwt_required
 def downvote_question(question_id):
     """Downvote a question"""
