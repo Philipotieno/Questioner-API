@@ -3,6 +3,8 @@ import re
 from flask import jsonify
 import datetime
 
+now = datetime.datetime.now()
+
 
 def validate_register(data):
     # validate firstname
@@ -29,22 +31,6 @@ def validate_register(data):
     if validate_password(data):
         return validate_password(data)
 
-def validate_meetup(data):
-    #validate topic
-    if validate_topic(data):
-        return validate_topic(data)
-
-    #validate date
-    if validate_date(data):
-        return validate_date(data)
-
-    #validate tags
-    if validate_tags(data):
-        return validate_tags(data)
-
-    #validate location
-    if validate_location(data):
-        return validate_location(data)
 
 def validate_questions(data):
     #validate title
@@ -81,49 +67,47 @@ def validate_email(data):
         return jsonify({'message': msg}), 400
 
 def validate_phone(data):
-    """Validate phone_nu,ber"""
+    """Validate phone_number"""
     if not re.match(r'^[07]\d{9}$', data['phone_number']):
         msg = "Please input a valid phone number of the format 0703473377!"
         return jsonify({'message': msg}), 400
 
 def validate_password(data):
     """Validate password"""
-    if not re.match(r'[A-Za-z0-9@#$%^&+=]{8,}', data['password']):
-        msg = "Password must be at least 6 characters long e.g \'aA@12=wq\'"
+    pswd = data['password']
+    if len(pswd) < 8:
+        msg = "Password should be at least 8 characters"
         return jsonify({'message': msg}), 400
 
-def validate_topic(data):
-    """Validate topic"""
-    if not re.match(r'^[a-zA-Z0-9]{3,}$', data['topic']):
-        msg = "Topic should have letters or numbers or a combination of both and should be 3 or more characters long"
+    if re.search('[0-9]',pswd) is None:
+        msg = "Make sure your password has a number in it"
         return jsonify({'message': msg}), 400
 
-def validate_title(data):
-    """Validate topic"""
-    if len(data['title']) < 10:
-        msg = "Length of the title should be 15 or more characters long"
+    if re.search('[a-z]',pswd) is None:
+        msg = "Make sure your password has a lowercase letter in it"
         return jsonify({'message': msg}), 400
 
-def validate_body(data):
-    """Validate body"""
-    if len(data['body']) < 25 :
-        msg = "Length of the body should be 25 or more characters long"
+    if re.search('[A-Z]',pswd) is None:
+        msg = "Make sure your password has an uppercase letter in it"
         return jsonify({'message': msg}), 400
+
+    if re.search('[@#$%^&+=]',pswd) is None:
+        msg = "Make sure your password has one special character @#$%^&+="
+        return jsonify({'message': msg}), 400
+
 
 def validate_date(data):
     """Validate topic"""
     try:
         if datetime.datetime.strptime(data['happening_on'], '%d-%m-%Y'):
             pass
-    except ValueError as e:
-        return jsonify({'message' : str(e)}), 400
-
-def validate_tags(data):
-    """Validate tags"""
-    if not re.match(r'^[a-zA-Z0-9@#$%]{3,}$', data['tags']):
-        msg = "Tags should be 3 or more characters long"
+    except:
+        msg = "Date should be in the format %DD-%MM-%YYYY"
         return jsonify({'message': msg}), 400
 
+    if datetime.datetime.strptime(data['happening_on'], '%d-%m-%Y') < now:
+        msg = "Date cannot be earlier than today"
+        return jsonify({'message': msg}), 400
 
 def validate_location(data):
     """Validate location"""

@@ -6,9 +6,8 @@ import datetime
 from app.api.v2.models.usersmodels import User
 from app.api.v2.views.validator import validate_register
 from app.api.v2.models.db import Database
-from flask_jwt_extended import (create_access_token, create_refresh_token,
-                                jwt_required, get_jwt_identity,
-                                jwt_refresh_token_required)
+from flask_jwt_extended import (create_access_token,
+                                jwt_required, get_jwt_identity)
 
 db = Database()
 cur = db.cur
@@ -42,7 +41,10 @@ def registered_user():
     )
 
     new_user = user_details.register_user()
-    return jsonify({'status':201,'message': 'User Registered successfully!', "data" : new_user}), 201
+    access_token = create_access_token(identity=data['username'])
+    return jsonify({'status':201,
+            'message': 'User Registered successfully!', "data" : new_user,
+            'access_token': access_token }), 201
     
 @v2_user.route('/login', methods=['POST'])
 def login():

@@ -13,7 +13,7 @@ class Question():
 
     def __init__ (self,title, body, user_id, meetup_id):
         self.title = title
-        self.body = body
+        self.body = body 
         self.user_id = user_id
         self.meetup_id = meetup_id
         self.votes = 0
@@ -29,8 +29,10 @@ class Question():
     def ask_question(self):
         if self.check_if_question_exists(self.title):
             return False
+
+
         query = "INSERT INTO questions (title, body, user_id, meetup_id, created_on) values (%s, %s, %s, %s, %s) \
-        RETURNING question_id, title, body, user_id, meetup_id, created_on;"
+        RETURNING user_id, meetup_id, question_id, title, body, created_on;"
         cur.execute(
             query,
             (self.title,
@@ -105,3 +107,22 @@ class Question():
         }
 
         return result
+
+class Voters():
+    """ Implements voters class"""
+    def __init__ (self, user_id, question_id, vote):
+        self.user_id = user_id
+        self.question_id = question_id
+        self.vote = vote
+
+    def add_vote(self):
+        query = "INSERT INTO votes (user_id, question_id, vote) values (%s, %s, %s) \
+        RETURNING user_id, question_id, vote;"
+        cur.execute(
+            query,
+            (self.user_id,
+            self.question_id,
+            self.vote))
+        vot = cur.fetchone()
+        db.conn.commit()
+        return vot

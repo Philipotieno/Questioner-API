@@ -1,6 +1,5 @@
 import os
 from app.api.v2.models.db import Database
-import psycopg2
 
 db = Database()
 cur = db.cur
@@ -44,9 +43,9 @@ class User(object):
         return user
         
     @staticmethod
-    def get_user_by_id(user_id):
-        query = "SELECT * FROM users WHERE user_id=%s;"
-        cur.execute(query, (user_id, ))
+    def get_user_by_name(username):
+        query = "SELECT * FROM users WHERE username=%s;"
+        cur.execute(query, (username, ))
         user = cur.fetchone()
         if user:
             return user
