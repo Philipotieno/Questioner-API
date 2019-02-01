@@ -30,7 +30,7 @@ def create_app(env_name):
 	app.register_blueprint(v1_questions, url_prefix='/api/v1/questions')
 	app.register_blueprint(v2_questions, url_prefix='/api/v2/questions')
 	app.register_blueprint(v2_comments, url_prefix='/api/v2/comments')
-	app.register_blueprint(v2_rsvps, url_prefix='/api/v2/meetups/<meetup_id>/rsvp')
+	app.register_blueprint(v2_rsvps, url_prefix='/api/v2/meetups/<int:meetup_id>/rsvp')
 
 	@app.route('/')
 	def index():
