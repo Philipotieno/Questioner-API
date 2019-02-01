@@ -107,3 +107,22 @@ class Question():
         }
 
         return result
+
+class Voters():
+    """ Implements voters class"""
+    def __init__ (self, user_id, question_id, vote):
+        self.user_id = user_id
+        self.question_id = question_id
+        self.vote = vote
+
+    def add_vote(self):
+        query = "INSERT INTO votes (user_id, question_id, vote) values (%s, %s, %s) \
+        RETURNING user_id, question_id, vote;"
+        cur.execute(
+            query,
+            (self.user_id,
+            self.question_id,
+            self.vote))
+        vot = cur.fetchone()
+        db.conn.commit()
+        return vot
