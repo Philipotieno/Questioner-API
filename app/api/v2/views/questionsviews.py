@@ -4,9 +4,10 @@ from flask import Blueprint, jsonify, request
 import json
 
 from app.api.v2.models.questionsmodel import Question
+from app.api.v2.models.meetupsmodel import Meetup
+from app.api.v2.models.usersmodels import User
 from flask_jwt_extended import (jwt_required, get_jwt_identity)
 
-from app.api.v2.views.validator import validate_questions
 from app.api.v2.models.db import Database
 
 v2_questions = Blueprint('v2_uestions', __name__)
@@ -14,34 +15,33 @@ v2_questions = Blueprint('v2_uestions', __name__)
 db = Database()
 cur = db.cur
 
-@v2_questions.route('', methods=['POST'])
+@v2_questions.route('<meetup_id>', methods=['POST'])
 @jwt_required
-def create_question():
+def create_question(meetup_id):
     """ Creates a question """
-    try:
-        data = request.get_json()
-        if validate_questions(data):
-            return validate_questions(data)
+    meetup = Meetup.get_meetup_by_id(meetup_id)
 
-        # current_user = get_jwt_identity()
-        if not data or not data["title"] or not data["body"] or not data["user_id"] or not data["meetup_id"]:
-                return jsonify({'message': 'All fields are required!'}), 400
-        
-        try:
-            questions_data = Question(
-                data['title'],
-                data['body'],
-                data['user_id'],
-                data['meetup_id']
-                )
-            new_qns = questions_data.ask_question()
-            if new_qns:
-                return jsonify({'status':201, 'message': 'Question created!', 'data':new_qns}), 201
-            return jsonify({'message': 'Question with the title \'{}\' already exists'.format(data['title'])}), 409
-        except Exception:
-            return jsonify({'status':400, 'message': 'user_id or meetup_id does not exist'}), 400
-    except Exception as e:
-        return jsonify({'status':400, 'message': 'Please input all data in json format'}), 400
+    username = get_jwt_identity()
+    user = User.get_user_by_name(username)
+
+    if not meetup:
+        return jsonify({'message': 'Meetup does not exist!'}), 404
+    
+    data = request.get_json()
+
+    if not data or not data["title"] or not data["body"]:
+            return jsonify({'message': 'All fields are required!'}), 400
+    
+    questions_data = Question(
+        data['title'],
+        data['body'],
+        user['user_id'],
+        meetup['meetup_id']
+        )
+    new_qns = questions_data.ask_question()
+    if new_qns:
+        return jsonify({'status':201, 'message': 'Question created!', 'data':new_qns}), 201
+    return jsonify({'message': 'Question with the title \'{}\' already exists'.format(data['title'])}), 409
 
 @v2_questions.route('', methods=['GET'])
 def view_all_question():
