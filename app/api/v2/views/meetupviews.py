@@ -41,7 +41,7 @@ def get_meetups():
         return jsonify({'Meetups': upcoming}), 200
     return jsonify({'message': 'No meetups available!'})
 
-@v2_meetups.route('<meetup_id>', methods=['GET'])
+@v2_meetups.route('<int:meetup_id>', methods=['GET'])
 def get_specific_meetup(meetup_id):
     meetup = Meetup.get_meetup_by_id(meetup_id)
     if meetup:
