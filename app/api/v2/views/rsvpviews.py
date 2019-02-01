@@ -21,6 +21,7 @@ def post_rsvp(meetup_id):
     if not meetup:
         return jsonify({'message': 'Meetup not found!'}), 404
 
+
     username = get_jwt_identity()
     user = User.get_user_by_name(username)
 
