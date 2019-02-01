@@ -65,9 +65,12 @@ class Database:
                     response VARCHAR NOT NULL,
                     created_on TIMESTAMP);'''
 
+        votes = '''CREATE TABLE IF NOT EXISTS votes(
+                    user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
+                    question_id INTEGER REFERENCES questions(question_id) ON DELETE CASCADE,
+                    vote VARCHAR NOT NULL);'''
 
-
-        queries = [users, meetups, questions, comments, rsvps]
+        queries = [users, meetups, questions, comments, rsvps, votes]
         for q in queries:
             self.cur.execute(q)
             self.conn.commit()

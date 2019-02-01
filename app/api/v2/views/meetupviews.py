@@ -19,11 +19,12 @@ def create_meetup():
     if current_user == 'wiseadmin':
         data = request.get_json()
 
-        if not data or not data["topic"] or not data["location"] or not data["happening_on"] or not data["tags"]:
+        if not data or not data["topic"] or not data["location"] \
+        or not data["happening_on"] or not data["tags"] or "":
             return jsonify({'message': 'All fields are required!'}), 400
 
         meetup_details = Meetup(
-            data['topic'],
+            data['topic'].strip(),
             data['location'],
             data['tags'],
             data['happening_on']
