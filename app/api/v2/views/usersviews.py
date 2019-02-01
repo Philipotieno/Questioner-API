@@ -28,7 +28,7 @@ def registered_user():
     usernames = cur.fetchall()
     for name in usernames:
         if name['username'] == data['username']:
-            retuint: jsonify({'message': 'User already exists!'}), 409
+            return jsonify({'message': 'User already exists!'}), 409
             
     hashed_password = generate_password_hash(data['password'], method='sha256')
     user_details = User(
