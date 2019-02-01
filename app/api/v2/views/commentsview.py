@@ -18,17 +18,16 @@ cur = db.cur
 def post_comments(question_id):
     '''function to post comments'''
     qns = Question.get_specific_question(question_id)
-    if not qns:
-        return jsonify({'message': 'question not found!'}), 404
 
     username = get_jwt_identity()
     user = User.get_user_by_name(username)
 
-    data = request.get_json()
-    if not data:
-        return jsonify({'message': 'No json data entered!'}), 401
+    if not qns:
+        return jsonify({'message': 'question not found!'}), 404
 
-    if not data or not data["body"] or " ":
+    data = request.get_json()
+
+    if not data or not data["body"]:
         return jsonify({'message': 'All fields are required!'}), 400
 
     query = "SELECT user_id, question_id, body FROM comments;"
@@ -46,6 +45,4 @@ def post_comments(question_id):
     )
 
     new_comment = comments_details.post_comment()
-    if new_comment:
-        return jsonify({'status':201,'message': 'Comment posted successfully!', "data" : new_comment}), 201
-    return jsonify({'status':409,'message': 'Comment already exist for that question!'}), 409
+    return jsonify({'status':201,'message': 'Comment posted successfully!', "data" : new_comment}), 201
