@@ -3,7 +3,7 @@ import psycopg2
 from flask import Blueprint, jsonify, request
 import json
 
-from app.api.v2.models.questionsmodel import Question
+from app.api.v2.models.questionsmodel import Question, Voters
 from app.api.v2.models.meetupsmodel import Meetup
 from app.api.v2.models.usersmodels import User
 from flask_jwt_extended import (jwt_required, get_jwt_identity)
@@ -63,12 +63,38 @@ def fetch_specific_question(question_id):
 @jwt_required
 def upvote_question(question_id):
     """Upvote a question"""
+    data = request.get_json()
     question = Question.get_specific_question(question_id)
     if not question:
         return jsonify({"status":404, 'message': 'question does not exist!'}), 404
 
+    username = get_jwt_identity()
+    user = User.get_user_by_name(username)
+
+    if not data or not data["vote"]:
+        return jsonify({'message': 'All fields are required!'}), 400
+
+
+    if data['vote'].lower() != "upvote":
+        return jsonify({'error' : 'Response must upvote', "status":400}), 400
+
+    query = "SELECT user_id, question_id FROM votes;"
+    cur.execute(query)
+    votes = cur.fetchall()
+    for votes in votes:
+        if votes['user_id'] == user['user_id'] and votes['question_id'] == question['question_id']:
+            return jsonify({'message': 'User has already voted'}), 409
+
+    votes_data = Voters(
+        user['user_id'],
+        question['question_id'],
+        data['vote']
+        )
+
+    new_vote = votes_data.add_vote()
+
     result = Question.upvote_question(question["question_id"])
-    return jsonify({"status":400, 'message': 'Question upvoted succesfully!', "data": result}), 400
+    return jsonify({"status":400, 'message': 'Question upvoted succesfully!', "data": result, "new_vote": new_vote}), 400
 
 
 @v2_questions.route('<int:question_id>/downvote', methods=['PATCH'])
