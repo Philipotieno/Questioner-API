@@ -76,7 +76,7 @@ def upvote_question(question_id):
 
 
     if data['vote'].lower() != "upvote":
-        return jsonify({'error' : 'Response must upvote', "status":400}), 400
+        return jsonify({'error' : 'Response must be upvote', "status":400}), 400
 
     query = "SELECT user_id, question_id FROM votes;"
     cur.execute(query)
@@ -101,9 +101,34 @@ def upvote_question(question_id):
 @jwt_required
 def downvote_question(question_id):
     """Downvote a question"""
+    data = request.get_json()
     question = Question.get_specific_question(question_id)
     if not question:
         return jsonify({"status":404, 'message': 'question does not exist!'}), 404
 
+    username = get_jwt_identity()
+    user = User.get_user_by_name(username)
+
+    if not data or not data["vote"]:
+        return jsonify({'message': 'All fields are required!'}), 400
+
+
+    if data['vote'].lower() != "downvote":
+        return jsonify({'error' : 'Response must be downvote', "status":400}), 400
+
+    query = "SELECT user_id, question_id FROM votes;"
+    cur.execute(query)
+    votes = cur.fetchall()
+    for votes in votes:
+        if votes['user_id'] == user['user_id'] and votes['question_id'] == question['question_id']:
+            return jsonify({'message': 'User has already voted'}), 409
+
+    votes_data = Voters(
+        user['user_id'],
+        question['question_id'],
+        data['vote']
+        )
+
+    new_vote = votes_data.add_vote()
     result = Question.downvote_question(question["question_id"])
-    return jsonify({"status":400, 'message': 'Question upvoted succesfully!', "data": result}), 400
+    return jsonify({"status":400, 'message': 'Question downvoted!', "data": result}), 400
