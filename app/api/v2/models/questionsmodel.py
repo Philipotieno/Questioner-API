@@ -13,7 +13,7 @@ class Question():
 
     def __init__ (self,title, body, user_id, meetup_id):
         self.title = title
-        self.body = body
+        self.body = body 
         self.user_id = user_id
         self.meetup_id = meetup_id
         self.votes = 0
@@ -29,8 +29,10 @@ class Question():
     def ask_question(self):
         if self.check_if_question_exists(self.title):
             return False
+
+
         query = "INSERT INTO questions (title, body, user_id, meetup_id, created_on) values (%s, %s, %s, %s, %s) \
-        RETURNING question_id, title, body, user_id, meetup_id, created_on;"
+        RETURNING user_id, meetup_id, question_id, title, body, created_on;"
         cur.execute(
             query,
             (self.title,
