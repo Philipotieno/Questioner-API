@@ -16,10 +16,12 @@ class Database:
                 dbname=self.name,
                 user=self.user,
                 password=self.password)
-            self.cur = self.conn.cursor(cursor_factory=RealDictCursor)
+            # self.cur = self.conn.cursor(cursor_factory=RealDictCursor)
             print("successfully connected")
         except:
             print("Unable to connect to the database")
+
+        self.cur = self.conn.cursor(cursor_factory=RealDictCursor)
 
     def create_tables(self):
         """ Method to create tables """
@@ -102,7 +104,7 @@ class Database:
 
     def drop_tables(self):
         '''Method to drop tables'''
-        query = "DROP TABLE users, meetups, questions, comments, rsvps;"
+        query = "DROP TABLE users, meetups, questions, comments, rsvps, votes;"
         self.cur.execute(query)
         self.conn.commit()
         print("All tables dropped successfully!")
