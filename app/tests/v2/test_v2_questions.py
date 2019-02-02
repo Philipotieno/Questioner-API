@@ -11,7 +11,11 @@ class TestQuestion(TestSetup):
         token = create_access_token(identity="username")
 
         res = self.client.post(
-            '/api/v2/questions',
+            '/api/v2/questions/1',
             data=json.dumps(self.question_1),
             content_type='application/json')
         self.assertEqual(res.status_code, 401)
+        msg = json.loads(res.data.decode("UTF-8"))
+        print(msg)
+        self.assertIn('Missing Authorization Header', msg['msg'])
+        self.assertTrue(res.content_type == 'application/json')
