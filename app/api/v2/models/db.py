@@ -10,14 +10,12 @@ class Database:
         self.name = 'questioner'
         self.user = 'mitch'
         self.password = 'mufasa2019'
-        self.port = 5432
 
         self.conn = psycopg2.connect(
             host=self.host,
             dbname=self.name,
             user=self.user,
-            password=self.password,
-            port=self.port)
+            password=self.password)
 
         self.cur = self.conn.cursor(cursor_factory=RealDictCursor)
 
