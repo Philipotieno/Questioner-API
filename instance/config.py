@@ -14,14 +14,12 @@ class TestingConfig(Config):
     """Testing configuration"""
     DEBUG = True
     TESTING = True
-    TEST_DB = "mytestdb"
-    APP_SETTINGS = "testing"
 
 
 class DevelopmentConfig(Config):
     """Development configuration"""
     DEBUG = True
-    APP_SETTINGS = "development"
+    TESTING = True
 
 
 class ProductionConfig(Config):
