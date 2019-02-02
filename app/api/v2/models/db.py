@@ -6,22 +6,13 @@ from werkzeug.security import generate_password_hash
 class Database:
     '''constructor initialize environment'''
     def __init__(self):
-        self.host = 'localhost'
-        self.name = 'questioner'
-        self.user = 'mitch'
-        self.password = 'mufasa2019'
+        self.conn = psycopg2.connect(
+            host='localhost',
+            dbname='questioner',
+            user='mitch',
+            password='mufasa2019')
+        self.cur = self.conn.cursor(cursor_factory=RealDictCursor)
         
-        try:
-            self.conn = psycopg2.connect(
-                host=self.host,
-                dbname=self.name,
-                user=self.user,
-                password=self.password)
-            self.cur = self.conn.cursor(cursor_factory=RealDictCursor)
-            print("successfully connected")
-        except:
-            print("Unable to connect to the database")
-
     def create_tables(self):
         """ Method to create tables """
         users = '''CREATE TABLE IF NOT EXISTS users(
