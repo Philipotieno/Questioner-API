@@ -1,20 +1,16 @@
-from flask import Blueprint, jsonify, request, make_response
+from flask import Blueprint, jsonify, request
 from werkzeug.security import generate_password_hash, check_password_hash
-import datetime
-import psycopg2
+from flask_jwt_extended import create_access_token
 
 #local imports
 from app.api.v2.models.usersmodels import User
 from app.api.v2.views.validator import validate_register
 from app.api.v2.models.db import Database
-from flask_jwt_extended import (create_access_token,
-                                jwt_required, get_jwt_identity)
 
 db = Database()
 cur = db.cur
 
 v2_user = Blueprint('v2_users', __name__)
-
 
 @v2_user.route('/register', methods=['POST'])
 def registered_user():
@@ -22,7 +18,7 @@ def registered_user():
     data = request.get_json()
 
     if validate_register(data):
-    	return validate_register(data)
+        return validate_register(data)
 
     query = "SELECT username from users;"
     cur.execute(query)
@@ -44,9 +40,9 @@ def registered_user():
     new_user = user_details.register_user()
     access_token = create_access_token(identity=data['username'])
     return jsonify({'status':201,
-            'message': 'User Registered successfully!', "data" : new_user,
-            'access_token': access_token }), 201
-    
+                    'message': 'User Registered successfully!', "data" : new_user,
+                    'access_token': access_token}), 201
+
 @v2_user.route('/login', methods=['POST'])
 def login():
     '''View function to log in'''
@@ -64,7 +60,6 @@ def login():
 
     if check_password_hash(user['password'], data["password"]):
         access_token = create_access_token(identity=data['username'])
-        return jsonify({'status':200, 'message': 'You are now logged in', 
+        return jsonify({'status':200, 'message': 'You are now logged in',
                         'access_token': access_token}), 200
-
     return jsonify({'message': 'Incorrect username or password'}), 401
