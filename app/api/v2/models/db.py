@@ -3,7 +3,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from werkzeug.security import generate_password_hash
 
-class Database:
+class Database(object):
     # constructor initialize environment
     def __init__(self):
         self.host = 'localhost'
