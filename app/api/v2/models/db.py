@@ -1,4 +1,5 @@
 """Creates database and tables"""
+import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from werkzeug.security import generate_password_hash
@@ -6,10 +7,10 @@ from werkzeug.security import generate_password_hash
 class Database:
     '''constructor initialize environment'''
     def __init__(self):
-        self.host = 'localhost'
-        self.name = 'questioner'
-        self.user = 'mitch'
-        self.password = 'mufasa2019'
+        self.host = os.getenv('DB_HOST')
+        self.name = os.getenv('DB_NAME')
+        self.user = os.getenv('DB_USERNAME')
+        self.password = os.getenv('DB_PASSWORD')
         try:
             self.conn = psycopg2.connect(
                 host=self.host,
@@ -102,7 +103,7 @@ class Database:
 
     def drop_tables(self):
         '''Method to drop tables'''
-        query = "DROP TABLE users, meetups, questions, comments, rsvps;"
+        query = "DROP TABLE users, meetups, questions, comments, rsvps, votes;"
         self.cur.execute(query)
         self.conn.commit()
         print("All tables dropped successfully!")
