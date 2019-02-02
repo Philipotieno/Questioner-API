@@ -3,15 +3,14 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from werkzeug.security import generate_password_hash
 
-class Database(object):
-    # constructor initialize environment
+class Database:
+    '''constructor initialize environment'''
     def __init__(self):
         self.host = 'localhost'
         self.name = 'questioner'
         self.user = 'mitch'
         self.password = 'mufasa2019'
-
-        try: 
+        try:
             self.conn = psycopg2.connect(
                 host=self.host,
                 dbname=self.name,
@@ -77,7 +76,6 @@ class Database(object):
         print("All tables created successfully!")
         # def insert_admin(self):
         try:
-            username = "wiseadmin"
             query = """SELECT * FROM
             users WHERE username = 'wiseadmin'"""
             self.cur.execute(query)
@@ -103,6 +101,7 @@ class Database(object):
             self.cur.close() #close communication with the database
 
     def drop_tables(self):
+        '''Method to drop tables'''
         query = "DROP TABLE users, meetups, questions, comments, rsvps;"
         self.cur.execute(query)
         self.conn.commit()
