@@ -2,7 +2,7 @@
 from app.api.v2.models.db import Database
 
 db = Database()
-cur = db.cur
+cur = db.curs
 
 class User:
 
