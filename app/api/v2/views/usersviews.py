@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
+import psycopg2
 
 #local imports
 from app.api.v2.models.usersmodels import User
