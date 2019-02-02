@@ -18,9 +18,9 @@ class Database:
                 user=self.user,
                 password=self.password)
             print("successfully connected")
+            self.cur = self.conn.cursor(cursor_factory=RealDictCursor)
         except:
             print("Unable to connect to the database")
-        self.cur = self.conn.cursor(cursor_factory=RealDictCursor)
 
     def create_tables(self):
         """ Method to create tables """
