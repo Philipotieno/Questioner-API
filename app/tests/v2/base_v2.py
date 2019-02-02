@@ -27,7 +27,7 @@ class TestSetup(unittest.TestCase):
             "username" : "testuser",
             "email" : "email@gmail.com",
             "phone_number" : "0703473377",
-            "password" : "password"
+            "password" : "12P@word"
         }
 
         self.user_2 = {
@@ -71,15 +71,11 @@ class TestSetup(unittest.TestCase):
 
 
         self.question_1 = {
-            "user_id" : 1,
-            "meetup_id" : 1,
             "title" : "testtitle thidhdh",
             "body" : "this is a test body should be good"
         }
 
         self.question_2 = {
-            "user" : 2,
-            "meetup" : 4,
             "title" : "testtitle_3",
             "body" : "this is a test body_3"
         }
