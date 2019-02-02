@@ -17,8 +17,8 @@ class Database:
                 dbname=self.name,
                 user=self.user,
                 password=self.password)
-            print("successfully connected")
             self.cur = self.conn.cursor(cursor_factory=RealDictCursor)
+            print("successfully connected")
         except:
             print("Unable to connect to the database")
 
@@ -108,3 +108,6 @@ class Database:
         self.conn.commit()
         print("All tables dropped successfully!")
         self.cur.close()
+
+p = Database()
+p.create_tables()
