@@ -2,7 +2,8 @@
 from app.api.v2.models.db import Database
 
 db = Database()
-cur = db.cur
+conn = db.conn
+cur = conn.cursor()
 
 class User:
 
