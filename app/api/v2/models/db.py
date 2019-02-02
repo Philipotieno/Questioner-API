@@ -10,14 +10,16 @@ class Database:
         self.name = 'questioner'
         self.user = 'mitch'
         self.password = 'mufasa2019'
-
-        self.conn = psycopg2.connect(
-            host=self.host,
-            dbname=self.name,
-            user=self.user,
-            password=self.password)
-
-        self.cur = self.conn.cursor(cursor_factory=RealDictCursor)
+        try:
+            self.conn = psycopg2.connect(
+                host=self.host,
+                dbname=self.name,
+                user=self.user,
+                password=self.password)
+            self.cur = self.conn.cursor(cursor_factory=RealDictCursor)
+            print("successfully connected")
+        except:
+            print("Unable to connect to the database")
 
     def create_tables(self):
         """ Method to create tables """
@@ -100,7 +102,7 @@ class Database:
 
     def drop_tables(self):
         '''Method to drop tables'''
-        query = "DROP TABLE users, meetups, questions, comments, rsvps, votes;"
+        query = "DROP TABLE users, meetups, questions, comments, rsvps;"
         self.cur.execute(query)
         self.conn.commit()
         print("All tables dropped successfully!")
