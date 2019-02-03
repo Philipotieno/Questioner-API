@@ -46,7 +46,6 @@ class TestSetup(unittest.TestCase):
             "happening_on" : "1-1-2019",
         }
 
-      
 
         self.meetup_1 = {
             "topic" : "testtopic",
