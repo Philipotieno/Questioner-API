@@ -3,8 +3,9 @@ import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from werkzeug.security import generate_password_hash
-
-DATABASE_URL = "host='localhost' dbname='questioner' user='mitch' password='mufasa2019'"
+from dotenv import load_dotenv
+load_dotenv()
+DATABASE_URL = os.getenv("DATABASE_URL")
 conn = psycopg2.connect(DATABASE_URL)
 cur = conn.cursor(cursor_factory=RealDictCursor)
 
