@@ -1,18 +1,17 @@
 """Creates database and tables"""
+import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from werkzeug.security import generate_password_hash
 
+DATABASE_URL = "host='localhost' dbname='questioner' user='mitch' password='mufasa2019'"
+
 class Database:
     '''constructor initialize environment'''
     def __init__(self):
-        self.conn = psycopg2.connect(
-            host='localhost',
-            dbname='questioner',
-            user='mitch',
-            password='mufasa2019')
+        self.conn = psycopg2.connect(DATABASE_URL)
         self.cur = self.conn.cursor(cursor_factory=RealDictCursor)
-        
+
     def create_tables(self):
         """ Method to create tables """
         users = '''CREATE TABLE IF NOT EXISTS users(
