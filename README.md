@@ -121,7 +121,7 @@ Example request body:
 }
 ```
 
-No authentication required, returns a meetup
+authentication required, returns a meetup
 
 Required fields: `topic`, `location`, `tags`, `happening_on`
 
@@ -180,28 +180,26 @@ Example reSponse:
     "status": 200
 }
 ```
-No authentication required, returns a meetup
+authentication required, returns a meetup
 
 Required: `<meetup_id>`
 
 # Post a question to specific meetup
 
-`POST /api/v1/questions`
+`POST /api/v1/questions/<int: meetup_id>`
 
 Example request body:
 
 ```source-json
 {
-	"User": 1,
-	"meetup": 1,
 	"title":"why is python so popular",
 	"body":"Lorem ipsum dolor sit amet,,
 }
 ```
 
-No authentication required, returns a question
+authentication required, returns a question
 
-Required fields: `user`, `meetup`, `title`, `body` 
+Required fields:   `title`, `body` 
 
 # Upvote a question
 
@@ -211,44 +209,42 @@ Example request body:
 
 ```source-json
 {
-	"User": 1,
-	"upvote": 1,
+	"vote": "Upvote",
 }
 ```
 
-No authentication required
+authentication required
 
-Required fields: `user_id`, `upvote`
+Required fields: `vote`
 
 # Downvote a question
 
-`POST /api/v1/questions/<questio_id>/downvote`
+`POST /api/v1/questions/<int:question_id>/downvote`
 
 Example request body:
 
 ```source-json
 {
-	"User": 1,
-	"upvote": 1,
+	"vote": "Downvote"
 }
 ```
 
-No authentication required
+authentication required
 
-Required fields: `user`, `downvote`
+Required fields: `vote`
 
 # RSVP a meetup
 
-`POST /api/v1/meetup/<meetup_id>/rsvp`
+`POST /api/v1/meetup/<int:meetup_id>/rsvp`
 
 Example request body:
 
 ```source-json
 {
-	"attending": "yes/no/maybe"
+	"attending": "maybe"
 }
 ```
 
-No authentication required
+authentication required
 
 Required fields: `attending`
