@@ -32,9 +32,9 @@ def create_app(env_name):
 	app.register_blueprint(v2_comments, url_prefix='/api/v2/<int:question_id>/comments')
 	app.register_blueprint(v2_rsvps, url_prefix='/api/v2/meetups/<int:meetup_id>/rsvp')
 
-	# @app.route('/')
-	# def index():
-	# 	return redirect("https://questionerapi2.docs.apiary.io")
+	@app.route('/')
+	def index():
+		return redirect("https://questionerapi2.docs.apiary.io")
 
 	@app.errorhandler(400)
 	def bad_request(error):
