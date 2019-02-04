@@ -6,8 +6,8 @@ from werkzeug.security import generate_password_hash
 from dotenv import load_dotenv
 load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
-conn = psycopg2.connect(DATABASE_URL)
-cur = conn.cursor(cursor_factory=RealDictCursor)
+# conn = psycopg2.connect(DATABASE_URL)
+# cur = conn.cursor(cursor_factory=RealDictCursor)
 
 class Database:
     '''constructor initialize environment'''
