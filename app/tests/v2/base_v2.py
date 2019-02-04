@@ -78,7 +78,7 @@ class TestSetup(unittest.TestCase):
             "title" : "testtitle_3",
             "body" : "this is a test body_3"
         }
-
+    
     def tearDown(self):
         user = "DELETE FROM users WHERE username='testuser';"
         meetup = "DELETE FROM meetups WHERE topic='testing';"

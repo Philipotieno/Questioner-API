@@ -15,6 +15,8 @@ class TestMeetup(TestSetup):
             data=json.dumps(self.meetup_3),
             content_type='application/json',
             headers={'Authorization': 'Bearer {}'.format(token)})
+        # result = res.get_data(as_text=True)
+        # meetup_id = result['data']['id']
         self.assertEqual(res.status_code, 201)
 
     def test_meetup_with_no_auth(self):

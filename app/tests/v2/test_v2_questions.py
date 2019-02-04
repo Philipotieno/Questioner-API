@@ -16,6 +16,6 @@ class TestQuestion(TestSetup):
             content_type='application/json')
         self.assertEqual(res.status_code, 401)
         msg = json.loads(res.data.decode("UTF-8"))
-        print(msg)
         self.assertIn('Missing Authorization Header', msg['msg'])
         self.assertTrue(res.content_type == 'application/json')
+    
