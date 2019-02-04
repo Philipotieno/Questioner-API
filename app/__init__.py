@@ -1,4 +1,4 @@
-from flask import Flask,Blueprint
+from flask import Flask,Blueprint, redirect
 from flask import Flask, jsonify
 
 from instance.config import app_config
@@ -34,12 +34,16 @@ def create_app(env_name):
 
 	@app.route('/')
 	def index():
-		return jsonify({"Message" : "welcome to questioner"})
+		return redirect("https://questionerapi2.docs.apiary.io")
 
 	@app.errorhandler(400)
 	def bad_request(error):
 		return jsonify({'message': 'Please input all required fields!'}), 400
 
+	@app.errorhandler(KeyError)
+	def key_handler(KeyError):
+		return jsonify({'message': '{} is missing! Please input.'.format(KeyError)})
+	
 	@app.errorhandler(404)
 	def not_found(error):
 		return jsonify({'message': 'The requested URL was not found, please check your spelling and try again'}), 404
