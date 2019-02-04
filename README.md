@@ -3,6 +3,8 @@
 # Questioner
 Questioner is a platform that allows users to crowdsource questions for a meetup
 
+## Documentation
+- [https://questionerapi2.docs.apiary.io](https://questionerapi2.docs.apiary.io)
 ## Features
 - Users can create an account.
 - Signed up users can log into their account.
