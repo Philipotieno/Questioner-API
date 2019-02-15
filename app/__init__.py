@@ -1,5 +1,7 @@
 from flask import Flask,Blueprint, redirect
 from flask import Flask, jsonify
+from flask_cors import CORS
+import os
 
 from instance.config import app_config
 from app.api.v1.views.usersviews import v1_user
@@ -20,6 +22,7 @@ def create_app(env_name):
 	app = Flask(__name__)
 	app.config.from_object(app_config[env_name])
 	app.url_map.strict_slashes = False
+	CORS(app)
 
 	jwt = JWTManager(app)
 	
